@@ -1,0 +1,23 @@
+{
+  "name": "demo",
+  "version": "1.0.0",
+  "description": "simple demos or functions",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "gulp webserver"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/shuyulxf/demo.git"
+  },
+  "keywords": [
+    "simple",
+    "codes"
+  ],
+  "author": "shuyu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/shuyulxf/demo/issues"
+  },
+  "homepage": "https://github.com/shuyulxf/demo#readme"
+}
