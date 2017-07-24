@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<style type="text/css">
+		.test{
+			padding: 30px;
+			width: 400px;
+			margin: 0 auto;
+			border: 1px solid grey;
+		}
+		.imgLongWrap{
+			width: 60%;
+			overflow: hidden;
+		}
+		.imgLongWrap img{
+			width: 100%;
+		}
+	</style>
+</head>
+<body>
+	<div class="test" id='t'>
+		
+	</div>
+	<script type="text/javascript" src='./main.js'></script>
+	<script type="text/javascript">
+		
+		var rlt = "第一张图：<img src='http://180.153.51.164:8081/ftpupload/ewebeditor/uploadfile/20160929160409813.bmp'>"
+				+ "第二张图：<img src='http://180.153.51.164:8081/ftpupload/ewebeditor/uploadfile/20160929160435924.bmp'>"
+				+ "第三张图：<img src='http://180.153.51.164:8081/ftpupload/ewebeditor/uploadfile/20160929160705456.bmp'>"
+				+ "第四张图：<img src='http://180.153.51.164:8081/ftpupload/ewebeditor/uploadfile/20160929160816707.bmp'>"
+
+		var imgSrcs = getImgSrcs(rlt);
+		loadImages(imgSrcs, function(rlt) {
+			document.getElementById('t').innerHTML = rlt;
+		}, rlt, 400/2);
+	</script>
+</body>
+</html>
