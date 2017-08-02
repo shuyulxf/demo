@@ -19,7 +19,7 @@ var partition = function(arr, start, end) {
 		index = Math.floor(Math.random() * (end - start + 1) + start);
 	swap(arr, index, end);
 
-	for (index = start; index < end; i++) {
+	for (index = start; index < end; index++) {
 		if (arr[index] < arr[end]) {
 			small++;
 			if (small != end)	swap(arr, small, index);

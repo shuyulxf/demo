@@ -2,50 +2,66 @@
 <html>
 <head>
 	<title></title>
+	<script type="text/javascript">
+		function evenStr(str) {
+		    if (!str) return 0;
+		    var rgx = /^([a-z]+)\1/g;
+		}
+	</script>
+	<script src="./vue@2.4.1.js"></script>
+	<script src="./vue-router.js"></script>
 </head>
 <body>
-	<div id="app-2">
-	  <span v-bind:title="obj">
-	    鼠标悬停几秒钟查看此处动态绑定的提示信息！
-	  </span>
-	  <span>
-	  	{{obj.b}}
-	  </span>
-	  <span>
-	  	{{obj.a}}
-	  </span>
+	<div id="app">
+		<p>
+			<router-link to="/user/foo">/user/foo</router-link>
+			<router-link to="/user/foo/profile">/user/foo/profile</router-link>
+			<router-link to="/user/foo/posts">/user/foo/posts</router-link>
+		</p>
+		<router-view></router-view>
 	</div>
-	<input type="text" name="test" id="test">
-	<input type="text" name="test" id="test">
-	<script src="https://unpkg.com/vue"></script>
-	<script type="text/javascript">
-		var app = new Vue({
-		  el: '#app-2',
-		  data: {
-		    message: 'Hello Vue!',
-		    obj :  {
-		    	b:111
-		    }
-		  }
-		});
-	
-		var testDom = document.getElementById("test");
-		// var data = {
-		// 	message: testDom.value
-		// }
-		
-		// Object.defineProperty(testDom, "value", {
-		// 	get: function() {
-		// 		return data.message;
-		// 	},
-		// 	set: function(value) {
-				
-		// 		data.message = value;
-		// 	}
-		// });
-		// testDom.addEventListener("input", function() {
 
-		// })
+	
+	<script type="text/javascript">
+		const User = {
+			template: `
+				<div class="user">
+					<h2>User {{ $route.params.id }}</h2>
+					<router-view></router-view>
+				</div>
+			`
+		}
+		const UserHome = { template: '<div>Home</div>' }
+		const UserProfile = { template: '<div>Profile</div>' }
+		const UserPosts = { template: '<div>Posts</div>' }
+
+		const router = new VueRouter({
+			routes: [
+				{ path: '/user/:id', 
+				  component: User,
+					children: [
+						// UserHome will be rendered inside User's <router-view>
+						// when /user/:id is matched
+						{ path: '', component: UserHome , redirect: 'profile'},
+						
+						// UserProfile will be rendered inside User's <router-view>
+						// when /user/:id/profile is matched
+						{ path: 'profile', component: UserProfile },
+
+						// UserPosts will be rendered inside User's <router-view>
+						// when /user/:id/posts is matched
+						{ path: 'posts', component: UserPosts }
+					]
+				}
+			],
+			//mode: 'abstract',
+			base: './'
+		})
+		router.beforeEach((to, from, next) => {
+			console.log(to, from, typeof next);
+			next();
+		})
+		const app = new Vue({ router }).$mount('#app')
 	</script>
 </body>
 </html>

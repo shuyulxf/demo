@@ -973,6 +973,7 @@ function defineReactive$$1 (
       if (newVal === value || (newVal !== newVal && value !== value)) {
         return
       }
+      
       /* eslint-enable no-self-compare */
       if ("development" !== 'production' && customSetter) {
         customSetter();
@@ -982,6 +983,7 @@ function defineReactive$$1 (
       } else {
         val = newVal;
       }
+      //debugger
       childOb = !shallow && observe(newVal);
       dep.notify();
     }
@@ -2477,6 +2479,7 @@ function mountComponent (
   hydrating
 ) {
   vm.$el = el;
+
   if (!vm.$options.render) {
     vm.$options.render = createEmptyVNode;
     {
@@ -2523,7 +2526,7 @@ function mountComponent (
       vm._update(vm._render(), hydrating);
     };
   }
-
+  //debugger
   vm._watcher = new Watcher(vm, updateComponent, noop);
   hydrating = false;
 
@@ -2643,6 +2646,7 @@ function deactivateChildComponent (vm, direct) {
 }
 
 function callHook (vm, hook) {
+
   var handlers = vm.$options[hook];
   if (handlers) {
     for (var i = 0, j = handlers.length; i < j; i++) {
@@ -2814,6 +2818,7 @@ var Watcher = function Watcher (
   options
 ) {
   this.vm = vm;
+  //debugger
   vm._watchers.push(this);
   // options
   if (options) {
@@ -2833,6 +2838,7 @@ var Watcher = function Watcher (
   this.depIds = new _Set();
   this.newDepIds = new _Set();
   this.expression = expOrFn.toString();
+  //debugger
   // parse expression for getter
   if (typeof expOrFn === 'function') {
     this.getter = expOrFn;
@@ -4144,12 +4150,14 @@ function renderMixin (Vue) {
 var uid$1 = 0;
 
 function initMixin (Vue) {
+
   Vue.prototype._init = function (options) {
     var vm = this;
     // a uid
     vm._uid = uid$1++;
 
     var startTag, endTag;
+    //debugger
     /* istanbul ignore if */
     if ("development" !== 'production' && config.performance && mark) {
       startTag = "vue-perf-init:" + (vm._uid);
@@ -4176,6 +4184,7 @@ function initMixin (Vue) {
     {
       initProxy(vm);
     }
+    //debugger
     // expose real self
     vm._self = vm;
     initLifecycle(vm);
@@ -5624,7 +5633,7 @@ function _update (oldVnode, vnode) {
   var isDestroy = vnode === emptyNode;
   var oldDirs = normalizeDirectives$1(oldVnode.data.directives, oldVnode.context);
   var newDirs = normalizeDirectives$1(vnode.data.directives, vnode.context);
-
+//debugger
   var dirsWithInsert = [];
   var dirsWithPostpatch = [];
 
@@ -7830,6 +7839,7 @@ Vue$3.prototype.$mount = function (
   hydrating
 ) {
   el = el && inBrowser ? query(el) : undefined;
+
   return mountComponent(this, el, hydrating)
 };
 
@@ -8424,6 +8434,7 @@ function parse (
   template,
   options
 ) {
+
   warn$2 = options.warn || baseWarn;
 
   platformIsPreTag = options.isPreTag || no;
@@ -9946,6 +9957,7 @@ var createCompiler = createCompilerCreator(function baseCompile (
   template,
   options
 ) {
+  //debugger
   var ast = parse(template.trim(), options);
   optimize(ast, options);
   var code = generate(ast, options);
