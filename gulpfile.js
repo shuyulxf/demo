@@ -1,28 +1,61 @@
-var gulp = require('gulp');
-var webserver = require('gulp-webserver'); 
-var babel = require('gulp-babel');
+var gulp = require('gulp'),
+    webserver = require('gulp-webserver'),
+    babel = require('gulp-babel'),
+    sass = require('gulp-sass'),
+    concat = require('gulp-concat'),
+    rename = require('gulp-rename'),
+    uglify = require('gulp-uglify'),
+    browserify = require('browserify'),
+    sourcemaps = require("gulp-sourcemaps"),
+    source = require('vinyl-source-stream'),
+    buffer = require('vinyl-buffer'),
+    $ = require('gulp-load-plugins')();
+
+var dist = './dist/',
+    base = './**/*';
 
 gulp.task('webserver', function() {
   gulp.src('./')
-    .pipe(webserver({
-      livereload: true,
-      directoryListing: true,
-      open: true
-    }));
+      .pipe(webserver({
+        livereload: true,
+        directoryListing: true,
+        open: true
+      })); 
 });
 
+gulp.task('sass', function() {
+    gulp.src('./*/*/*.scss')
+        .pipe(sass())
+        .pipe(gulp.dest(dist))
+});
 gulp.task('es6', function() {
-	gulp.src('./src/js/*.js')
-	.pipe(babel({
-		presets: ['es2015']
-	}))
-	.pipe(gulp.dest('./dist/js/'))
+  gulp.src(base + '.es6')
+      .pipe(babel({
+        presets: ['es2015','stage-3']
+        //plugins: ["transform-es2015-modules-amd"]
+      }))
+      .pipe(gulp.dest(dist));
+});
+gulp.task('browserify', ['es6'], function() {
+  var b = browserify({
+      entries: "./dist/elements/main.js",
+      debug: true
+  });
+  return b.bundle()
+      .pipe(source("bundle.js"))
+      .pipe(buffer())
+      .pipe(sourcemaps.init({loadMaps: true}))
+      .pipe(sourcemaps.write("."))
+      .pipe(gulp.dest(dist));
 });
 
-gulp.task('watch', function() {
-var watcher = gulp.watch('./src/js/*.js', ['es6']);
-watcher.on('change', function(event) {
-  console.log(event);
+
+
+gulp.task('watch', ['sass','es6'], function() {
+  gulp.watch(base + 'scss', ['sass']);
+  gulp.watch(base + 'es6', ['es6']);
 });
 
-});
+
+
+gulp.task('default', ['webserver','sass', 'es6', 'watch']);
