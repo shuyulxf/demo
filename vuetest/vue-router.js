@@ -1871,7 +1871,7 @@ History.prototype.confirmTransition = function confirmTransition (route, onCompl
 
   this.pending = route;
   var iterator = function (hook, next) {
-    debugger
+    //debugger
     if (this$1.pending !== route) {
       return abort()
     }
@@ -2402,7 +2402,7 @@ VueRouter.prototype.init = function init (app /* Vue component instance */) {
 };
 
 VueRouter.prototype.beforeEach = function beforeEach (fn) {
-  debugger
+  //debugger
   return registerHook(this.beforeHooks, fn)
 };
 

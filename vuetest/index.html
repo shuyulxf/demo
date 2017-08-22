@@ -12,6 +12,10 @@
 	<script src="./vue-router.js"></script>
 </head>
 <body>
+	<div style="width: 400px; height: 200px; background: red;" id="text">
+		<div style="width: 200px; height: 100px; background: blue;" id='t'>df</div>
+		sdfs
+	</div>
 	<div id="app">
 		<p>
 			<router-link to="/user/foo">/user/foo</router-link>
@@ -20,9 +24,28 @@
 		</p>
 		<router-view></router-view>
 	</div>
-
+	<div>
+		<form action="">
+			<select name="" id="">
+				<option value="1">name1</option>
+				<option value="2">name2</option>
+			</select>
+		</form>
+	</div>
 	
 	<script type="text/javascript">
+a = document.getElementById("text");
+b = document.getElementById("t");
+b.onmouseover = function(){console.log(1)};
+
+ a.onmouseenter=function(){console.log("mouseenter");}
+//function (){console.log("mouseover")}
+a.onmouseout = function(){console.log("mouseout")};//a.onmouseover = function(){console.log("mouseover")}
+//function (){console.log("mouseout")}
+
+//function (){console.log("mouseenter")}
+a.onmouseleave=function(){console.log("mouseleave")}
+
 		const User = {
 			template: `
 				<div class="user">
