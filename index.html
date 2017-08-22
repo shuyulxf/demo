@@ -4,32 +4,6 @@
 	<title></title>
 	<meta name="viewport" content=" initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0">
 	<style type="text/css">
-	</style>
-</head>
-<body>
-	<button id="btn">获取信息</button>
-	<input type="file" id="files">
-<script type="text/javascript" src='codes/jsCodes/formatDate.js'></script>
-<!-- <script src="http://www.zhangxinxu.com/study/js/zxx.drag.1.0.js" type="text/javascript"></script> -->
-
-<script>
-	var xhr = new XMLHttpRequest();
-	btn.onclick = function(){
-		xhr.abort();
-	};
-	xhr.ontimeout = function(){
-		console.log('The request timed out.');
-	}
-	xhr.timeout = 100;
-	xhr.onabort = function(){
-		console.log("The transfer has been canceled by the user.");
-	}
-	xhr.onerror = function(){
-		console.log("An error occurred while transferring the file.");    
-	}
-	xhr.onloadend = function(){
-		console.log("请求结束");    
-	}
 </script>
 </body>
 </html>
