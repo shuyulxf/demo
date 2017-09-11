@@ -13,5 +13,3 @@ var getDiffDays = function(d1, d2) {
 
 	return Math.ceil(Math.abs(d1-d2)/(1000 * 3600 * 24));
 }
-
-console.log(getDiffDays(new Date("7/11/2015"), new Date("12/16/2016")))

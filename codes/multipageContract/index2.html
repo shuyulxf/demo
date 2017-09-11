@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+page 2
+<script type="text/javascript">
+	var sum = 0;
+	var div = document.createElement("div");
+	div.innerHTML = sum;
+	(document.getElementsByTagName("body")[0]).append(div);
+	window.onload = function() {
+		
+	}
+	window.onresize = function(){
+		console.log(1);
+	}
+	// setInterval(function(){
+	// 	var hash = window.location.hash;
+	// 	console.log(hash);
+	// }, 3000);
+	window.onload = function() {
+		debugger;
+		window.addEventListener("message", function(data){
+			console.log(data);
+		}, false)
+	}
+	
+</script>
+</body>
+</html>

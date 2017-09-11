@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+<script type="text/javascript" src='main.js'></script>
+<script type="text/javascript" >
+	var myWorker = WebWorker("webworker.js");
+	myWorker.onmessage = function(data) {
+		console.log(data)
+	}
+</script>
+</body>
+</html>
