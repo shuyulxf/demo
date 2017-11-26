@@ -1,0 +1,361 @@
+<html>
+    <head>
+        <title>羽毛球馆</title>
+        <style>
+            body {
+                margin: 20% 30%;
+                padding: 0;
+                background: #F5FFFA;
+            }
+            p{
+                margin: 0;
+            }
+            #reservation {
+                box-sizing: border-box;
+                width: 60%;
+                height: 40px;
+                line-height: 40px;
+                border: 1px solid #EEEEE0;
+                outline: none;
+                vertical-align: middle;
+                border-right: none;
+                padding: 5px 10px;
+            }
+            #optionBtn {
+                box-sizing: border-box;
+                padding: 0 15px;
+                height: 40px;
+                line-height: 40px;
+                border: 1px solid #EEEEE0;
+                outline: none;
+                vertical-align: middle;
+                border-left: none;
+                background: #FFDEAD;
+                color: #666;
+            }
+            #showInfo {
+                margin-top: 10px;
+                font-size: 12px;
+            }
+            .error{
+                color: red;
+            }
+            .tip{
+                color: #EE7600;
+            }
+        </style>
+    </head>
+    <body>
+        <section>
+            <div>
+                <input type="text" id='reservation' value="U12 2018-09-15 9:00~10:00 A"><input type="button" id='optionBtn' value="输入完成">
+            </div>
+            <div id="showInfo">
+            </div>
+        </section>
+        <script>
+            
+            let getVariableType = (v) => {
+                return Object.prototype.toString.call(v).slice(8, -1);
+            }
+    
+            let BaseHallInfo = function() {
+                this.openTime = 9;
+                this.closeTime = 21;
+                this.prices = [
+                    [30, 30, 30, 50, 50, 50, 50, 50, 50, 80, 80, 60, 60],
+                    [40, 40, 40, 50, 50, 50, 50, 50, 50, 60, 60, 60, 60]
+                ];
+                this.cancelOffRatio = [0.5, 0.25];
+                this.reservationInfo = {}
+            }
+            BaseHallInfo.prototype = {
+                getIndex: function(week){
+                    return week - 5 < 0 ? 0 : 1;
+                },
+                getValidDate: function(date) {
+                    if (getVariableType(date) == "String") {
+                        date = new Date(date);
+                    } 
+                    if (getVariableType(date) != "Date" || new Date().getTime() > date.getTime()) throw new Error("BaseHallInfo.getPrice first param Error!");
+                    
+                    return date;
+                },
+                getValidTime: function(time) {
+                    let times = time.split("~");
+    
+                    let t1 = times[0] && times[0].split(":")[0],
+                        t2 = times[1] && times[1].split(":")[0];
+                    
+                    let isValidTime = (t) => {
+                        return !(/^[\d]{1,2}$/g.test(t)) || (t - '0') > this.closeTime || (t - '0') < this.openTime;
+                    }
+                    if (isValidTime(t1) && isValidTime(t2))
+                        throw new Error("BaseHallInfo.getPrice second param Error!");
+                    return [t1 - 0, t2 - 0];
+                },
+                getPrice: function(date, t) {
+    
+                    date = this.getValidDate(date);
+    
+                    return this.prices[this.getIndex(date.getDay())][t];
+                },
+                reserve: function(date, time, which) {
+                    
+                    dateStr = this.getValidDate(date).toDateString();
+                    let ts = this.getValidTime(time);
+                    let t1 = ts[0] - 0 - this.openTime;
+                    let t2 = (ts[1] - 0) - this.openTime;
+    
+                    let reservationInfo = this.reservationInfo;
+    
+                    if (!reservationInfo[date]) {
+                        reservationInfo[date] = {
+                            "A": new Array(this.closeTime - this.openTime + 1),
+                            "B": new Array(this.closeTime - this.openTime + 1),
+                            "C": new Array(this.closeTime - this.openTime + 1),
+                            "D": new Array(this.closeTime - this.openTime + 1)
+                        }  
+                    }
+    
+    
+                    let whichReservation = reservationInfo[date][which];                
+                    
+                    for (let t = t1; t < t2; t++) {
+    
+                        let timeReservation = whichReservation[t];
+    
+                        if ( !timeReservation) {
+    
+                            let obj = new Object();
+                            obj.isBook = true;
+                            obj.cancelNumber = 0;
+    
+                            timeReservation = obj;
+                            
+                        }
+                        else {
+                            if (timeReservation.isBook) throw new Error("Error: the booking conflicts with existing bookings!");
+                            else {
+                                timeReservation.isBook = true;
+                            }
+                        }
+                        reservationInfo[date][which][t] = timeReservation;
+                    }
+                    return "Success: the booking is accepted!";
+                },
+                cancelReserve: function(date, time, which) {
+    
+                    dateStr = this.getValidDate(date).toDateString();
+                    let ts = this.getValidTime(time);
+                    let t1 = ts[0] - 0 - this.openTime;
+                    let t2 = (ts[1] - 0) - this.openTime;
+                    
+                    let reservationInfo = this.reservationInfo;
+    
+                    for(let t = t1; t < t2; t++) {
+                        
+                        if (!reservationInfo[date] || !reservationInfo[date][which] || !reservationInfo[date][which][t]) {
+                            throw new Error(" Error: the booking being cancelled does not exist!");
+                        } else {
+                            let obj = reservationInfo[date][which][t];
+                            if (obj.isBook) {
+                                obj.isBook = false;
+                                obj.cancelNumber = obj.cancelNumber + 1;
+                                
+                            } else {
+                                throw new Error(" Error: the booking being cancelled does not exist!");
+                            }
+                            reservationInfo[date][which][t] = obj;
+                        }
+                    }
+    
+                    return "Success: the booking is cancelled!";
+                },
+                getTotal: function() {
+                    let reservationInfo = this.reservationInfo;
+                    let rlt = {
+                        "A": {
+                            total: 0,
+                            lists: []
+                        },
+                        "B": {
+                            total: 0,
+                            lists: []
+                        },
+                        "C": {
+                            total: 0,
+                            lists: []
+                        },
+                        "D": {
+                            total: 0,
+                            lists: []
+                        }
+                    }
+                    
+                    for (let d in reservationInfo) {
+                        let whichReservations = reservationInfo[d];
+                        let cancelOffRatio = this.cancelOffRatio;
+    
+                        let getDurationPrices = (d, i, j, dayReservation) => {
+                            let sum = 0;
+                            for (let k = i; k <= j; k++) {
+                                sum += this.getPrice(d, k);
+                            }
+                            return sum;
+                        }
+                        let getDurationFeePrices = (d, i, j) => {
+                            let sum = 0;
+                            for (let k = i; k <= j; k++) {
+                                debugger;
+                                sum += this.getPrice(d, k) * cancelOffRatio[this.getIndex(k)];
+                            }
+                            return sum;
+                        }
+                        
+    
+                        for (let k in whichReservations) {
+    
+                            let dayReservation = whichReservations[k];
+                            let len = dayReservation.length;
+    
+                            let aStart = 0,
+                                cStart = 0;
+                            
+                            let i = 0;
+                            while(i < len) {
+    
+                                while(i < len && (!dayReservation[i] || !dayReservation[i].isBook)) i++;
+                                aStart = i;
+                                while(i < len && dayReservation[i] && dayReservation[i].isBook) i++;
+                                
+                                if (i < len || i == len && dayReservation[i-1] && dayReservation[i-1].isBook) {
+                                    let sum = getDurationPrices(d, aStart, i - 1);
+                                    rlt[k].total += sum;
+                                    rlt[k].lists.push(d + " " + (aStart + this.openTime) + ":00~" + (i + this.openTime) + ":00 " + sum + "元");
+                                }
+                                
+                            }
+    
+                            let j = 0;
+                            while(j < len) {
+    
+                                while(j < len && (!dayReservation[j] || dayReservation[j].cancelNumber <= 0)) j++;
+                                cStart = j;
+                                while(j < len && dayReservation[j] && dayReservation[j].cancelNumber > 0) j++;
+                                
+                                if (j < len || j == len && dayReservation[i-1] &&  dayReservation[j-1].cancelNumber > 0) {
+                                    let sum = getDurationFeePrices(d, cStart, j - 1);
+                                    rlt[k].total += sum;
+                                    rlt[k].lists.push(d + " " + (cStart + this.openTime) + ":00~" + (j + this.openTime) + ":00 违约金" + sum + "元");
+                                }
+                                
+                            }
+                        }
+                    }
+                    let rst = [];
+                    rst.push("---");
+                    for (let key in rlt) {
+                        let item = rlt[key];
+                        rst.push("场地:<span class='tip'>" + key + "</span>");
+                        rst = rst.concat(item.lists);
+                        rst.push("小计:<span class='tip'>" + item.total + "</span>元<br>");
+                    }
+                    rst.push("---");
+    
+                    return rst.join("<br>");
+                }
+            }
+            
+            let BaseInputInfo = function(input) {
+                this.input = input;
+                this.infoLists = {
+                    userID: null,
+                    date  : null,
+                    time  : null,
+                    which : null,
+                    isCancel : false
+                };
+                this.isValid = false;
+                this.init();
+            }
+            BaseInputInfo.prototype = {
+                init: function() {
+                    let rgx = /^[\s]*(U[\d]+)[\s]+([\d]{4}-[\d]{2}-[\d]{2})[\s]+([\d]{1,2}:00~[\d]{2}:00)([\s]+[ABCD])+([\s]+U)?[\s]*$/,
+                        input = this.input;
+                    let matches = input.match(rgx),
+                        infoLists = this.infoLists;
+    
+                    if (matches) {
+    
+                        this.isValid = true;
+                        
+                        let times = matches[3].trim().split("~");
+                        let t1 = times[0].split(":")[0] - 0, 
+                            t2 = times[1].split(":")[0] - 0;
+                        
+                        if (t1 < 1 || t1 > 24 || t2 < 1 || t2 > 24) throw new Error("BaseInputInfo's time param error!");
+                        
+                        let d = matches[2],
+                            date = new Date(d);
+                        if(date.toDateString() == "Invalid Date") throw new Error("BaseInputInfo's date param error!");
+                        
+                        infoLists.userID = matches[1].trim();
+                        infoLists.date = matches[2].trim();
+                        infoLists.time   = matches[3].trim();
+                        infoLists.which   = matches[4].trim();
+                        infoLists.isCancel = matches[5] ? true : false;
+                    } else {
+                        throw new Error("input param type error!");
+                    }
+                }
+            }
+            
+            let hallInfo = new BaseHallInfo();
+    //U12 2018-09-15 9:00~10:00 A
+            optionBtn.addEventListener("click", function(){
+    
+                let value = reservation.value;
+                let df = document.createDocumentFragment();
+                let ele = document.createElement("p");
+                ele.innerHTML = value;
+                df.append(ele);
+                try{
+                    let rlt = "";
+                    if (value.indexOf("收入汇总") != -1) {
+                        rlt = hallInfo.getTotal();
+                    } 
+                    else 
+                    {
+                        let infoLists = new BaseInputInfo(value).infoLists;
+                        
+                        if (infoLists.isCancel) {
+                            rlt = hallInfo.cancelReserve(infoLists.date, infoLists.time, infoLists.which);
+                        } else{
+                            rlt = hallInfo.reserve(infoLists.date, infoLists.time, infoLists.which);
+                        }
+                    }
+    
+                    let tip = document.createElement("p");
+                    tip.innerHTML = rlt;
+                    tip.style.marginBottom = '10px';
+                    df.append(tip);
+                } 
+                catch(e) {
+    
+                    let msg = e.message;
+                    if (e.message.indexOf("booking") == -1) {
+                        msg =  "Error: the booking is invalid!";
+                    } 
+                    
+                    let error = document.createElement("p");
+                    error.innerHTML = msg;
+                    error.style.marginBottom = '10px';
+                    error.className += "error";
+                    df.append(error);
+                }
+                showInfo.append(df);
+            });
+        </script>
+    </body>
+    </html>
