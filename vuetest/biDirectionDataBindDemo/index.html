@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>简单的双向数据绑定demo</title>
+</head>
+<body>
+	<pre>
+		在以下的例子中，我们使用defineProperty来监测数据的变化，利用dom事件来订阅数据变化的事件
+	</pre>
+	<div id="app">
+		<input type="text" name="text">
+		<span class="text"></span>
+	</div>
+	<script type="text/javascript">
+		let obj = {};
+		Object.defineProperty(obj, 'text', {
+			enumerable: true,
+		    configurable: true,
+		    get: function getter() {
+
+		    	return val;
+		    },
+		    set: function setter(newVal) {
+		    	val = newVal;
+		    	document.querySelectorAll(".text")[0].innerHTML = newVal;
+		    }
+		});
+		document.querySelector("[name=text]").addEventListener("keyup", function() {
+			obj.text = this.value;
+		})
+	</script>
+</body>
+</html>

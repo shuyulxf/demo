@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<script type="text/javascript">
+		function evenStr(str) {
+		    if (!str) return 0;
+		    var rgx = /^([a-z]+)\1/g;
+		}
+	</script>
+	<script src="./vue@2.4.1.js"></script>
+	<script src="./vue-router.js"></script>
+</head>
+<body>
+	<div style="width: 400px; height: 200px; background: red;" id="text">
+		<div style="width: 200px; height: 100px; background: blue;" id='t'>df</div>
+		sdfs
+	</div>
+	<div id="app">
+		<p>
+			<router-link to="/user/foo">/user/foo</router-link>
+			<router-link to="/user/foo/profile">/user/foo/profile</router-link>
+			<router-link to="/user/foo/posts">/user/foo/posts</router-link>
+		</p>
+		<router-view></router-view>
+	</div>
+	<div>
+		<form action="">
+			<select name="" id="">
+				<option value="1">name1</option>
+				<option value="2">name2</option>
+			</select>
+		</form>
+	</div>
+	
+	<script type="text/javascript">
+a = document.getElementById("text");
+b = document.getElementById("t");
+b.onmouseover = function(){console.log(1)};
+
+ a.onmouseenter=function(){console.log("mouseenter");}
+//function (){console.log("mouseover")}
+a.onmouseout = function(){console.log("mouseout")};//a.onmouseover = function(){console.log("mouseover")}
+//function (){console.log("mouseout")}
+
+//function (){console.log("mouseenter")}
+a.onmouseleave=function(){console.log("mouseleave")}
+
+		const User = {
+			template: `
+				<div class="user">
+					<h2>User {{ $route.params.id }}</h2>
+					<router-view></router-view>
+				</div>
+			`
+		}
+		const UserHome = { template: '<div>Home</div>' }
+		const UserProfile = { template: '<div>Profile</div>' }
+		const UserPosts = { template: '<div>Posts</div>' }
+
+		const router = new VueRouter({
+			routes: [
+				{ path: '/user/:id', 
+				  component: User,
+					children: [
+						// UserHome will be rendered inside User's <router-view>
+						// when /user/:id is matched
+						{ path: '', component: UserHome , redirect: 'profile'},
+						
+						// UserProfile will be rendered inside User's <router-view>
+						// when /user/:id/profile is matched
+						{ path: 'profile', component: UserProfile },
+
+						// UserPosts will be rendered inside User's <router-view>
+						// when /user/:id/posts is matched
+						{ path: 'posts', component: UserPosts }
+					]
+				}
+			],
+			//mode: 'abstract',
+			base: './'
+		})
+		router.beforeEach((to, from, next) => {
+			console.log(to, from, typeof next);
+			next();
+		})
+		const app = new Vue({ router }).$mount('#app')
+	</script>
+</body>
+</html>
