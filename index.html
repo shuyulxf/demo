@@ -3,5 +3,13 @@
 
 </head>
 <body>
+    <canvas id="test" width="400" height="400" style="background:#f6f9cb;"></canvas>
+    <script>
+        var cxt = test.getContext('2d');
+        cxt.beginPath();
+        cxt.moveTo(90, 90);
+        cxt.arcTo(60, 60, 60, 60, 10);
+        cxt.stroke();
+    </script>
 </body>
 </html>
