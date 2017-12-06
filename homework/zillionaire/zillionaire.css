@@ -53,10 +53,14 @@ body{
 }
 .dialog .close i{
     display: inline-block;
+    cursor: pointer;
 }
 .dialog .close i:first-child{
     transform: rotate(45deg);
     -webkit-transform: rotate(45deg) translate(6px, -6px);
+}
+.mac .dialog .close i:first-child{
+    -webkit-transform: rotate(45deg) translate(4px, -4px);
 }
 .dialog .close i:last-child{
     transform: rotate(-45deg);

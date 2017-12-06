@@ -1,3 +1,10 @@
+/* get data */
+let isMac = (function(){
+    return navigator.userAgent.indexOf("Mac OS X") !== -1;
+})();
+let osTypeClass = "windows";
+if (isMac) osTypeClass = "mac";
+document.getElementsByTagName("body")[0].className += osTypeClass;
 /* data type*/
 let isVarType = function() {
 
@@ -29,7 +36,7 @@ let extend = function(obj1, obj2) {
     if (!isVarType.isObject(obj2)) return obj1;
 
     for (let key in obj2) {
-        obj1[key] = obj2[key] || obj1[key];
+        obj1[key] = obj2[key] === undefined && obj1[key] || obj2[key];
     }
 
     return obj1;
@@ -41,6 +48,7 @@ function SimpleDialog(opts) {
     this.$container = opts.$container;
     let options = {
         title: "Dialog Title!",
+        hasTitle : true,
         type : "success",
         html : ""
     };
@@ -55,14 +63,15 @@ SimpleDialog.prototype = {
     },
     getInnerDialogNode: function() {
 
-        let {title, type, html} = this.options;
-        let HTML = `<p class="title">${title}</p>
+        let {hasTitle, title, type, html} = this.options;
+        let HTML = `<p class=${hasTitle && "title"}>${hasTitle ? title : ""}</p>
                 <div class="dialog-main">${html}</div>
                 <span class="close">
                     <i>|</i>
                     <i>|</i>
                 </span>
             `;
+
         let $dialog = document.createElement("dialog");
         $dialog.innerHTML = HTML;
         $dialog.className += "show dialog " + type;
@@ -123,6 +132,7 @@ let role1 = new GameRole("role1"),
 
 let dialog = new SimpleDialog({
     $container: document.getElementsByTagName("body")[0],
-    html: "dddsdddddddd"
+    html: "dddsdddddddd",
+    hasTitle: false
 });
 dialog.show();
