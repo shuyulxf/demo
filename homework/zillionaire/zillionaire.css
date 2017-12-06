@@ -25,7 +25,7 @@ body{
 .dialog{
     padding: 10px 20px;
     border-radius: 3px;
-   
+    min-width: 110px;
 }
 .dialog.error{
     border: 1px solid #fea335;
@@ -34,6 +34,9 @@ body{
 .dialog.success {
     border: 1px solid #6dccac;
     box-shadow: 0 0 10px #6dccac;
+}
+.warning {
+    color: red;
 }
 .dialog .title{
     font-size: 14px;
@@ -57,7 +60,7 @@ body{
 }
 .dialog .close i:first-child{
     transform: rotate(45deg);
-    -webkit-transform: rotate(45deg) translate(6px, -6px);
+    -webkit-transform: rotate(45deg) translate(4px, -4px);
 }
 .mac .dialog .close i:first-child{
     -webkit-transform: rotate(45deg) translate(4px, -4px);
@@ -66,15 +69,36 @@ body{
     transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }
+
+.dialog .op-btns{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.dialog .op-btns button{
+    -webkit-appearance: none;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+.dialog .op-btns .sure{
+    background: #6dccac;
+}
+.dialog .op-btns .cancel{
+    background: #eee;
+}
 .main{
     display: -webkit-flex;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 550px;
-    height: 600px;
-    border: 1px dotted #eee;
-    box-shadow: 0 0 12px #efefef;
+    height: 651px;
+    box-shadow: 0 0 15px #ccc;
 }
 .play-box{
     flex: 5;    
@@ -92,14 +116,36 @@ body{
 .play-box .part-2{
     flex: 2;
 }
+.play-box .part-2 li{
+    height: 100%;
+}
+.play-box .part-2-left, .play-box .part-2-right {
+    flex: 1;
+}
+.play-box .part-2-center{
+    flex: 8;
+}
 .play-box .part-3{
     flex: 1;
 }
-.play-box li{
+.play-box .part-1 li, .play-box .part-3 li{
     display: inline-block;
     width: 50px;
     height: 50px;
-    background: blue;
+    border: 1px solid #efefef;
+}
+.play-box .part-1 li:not(:last-child), .play-box .part-3 li:not(:last-child) {
+    border-right: none;
+}
+.play-box .part-2 .part-2-left li, .play-box .part-2 .part-2-right li{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    border: 1px solid #efefef;
+    border-top: none;
+}
+.play-box .part-2 .part-2-left li:last-child, .play-box .part-2 .part-2-right li:last-child{
+    border-bottom: none;
 }
 .dice{
     flex: 1;
