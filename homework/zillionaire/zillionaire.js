@@ -295,25 +295,36 @@ let PROPS = [
     }
 ]
 
+function Grid(latticeNumInRow, latticeNumInColumn) {
+    this.latticeNumInRow = latticeNumInRow;
+    this.latticeNumInColumn = latticeNumInColumn; 
+    this.init();
+}
+Grid.prototype = {
+    init: function() {
+       
+        var grid = new Array(4);
+        /* Top Row */
+        let topRow = grid[0] = new Array[latticeNumInRow];
+    
+        /* Right Column */
+        let rightColumn = grid[1] = new Array[latticeNumInColumn];
+        
+        /* Bottom Row */
+        let bottomRow = grid[2] = new Array[latticeNumInRow];
+    
+        /* Left Column */
+        let leftColumn =  grid[3] = new Array[latticeNumInColumn];
+    },
+    renderStartLattice: function() {
+        
+    }
+}
+
 /* init Grid */
 let latticeNumInRow = 10,
     latticeNumInColumn = 4;
-let GRID = (function(){
-
-    var grid = new Array(4);
-    
-    /* Top Row */
-    let topRow = grid[0] = new Array[latticeNumInRow];
-    
-    /* Right Column */
-    let rightColumn = grid[1] = new Array[latticeNumInColumn];
-    
-    /* Bottom Row */
-    let bottomRow = grid[2] = new Array[latticeNumInRow];
-
-    /* Left Column */
-    let leftColumn =  grid[3] = new Array[latticeNumInColumn];
-})();
+let GRID = new Grid(latticeNumInRow, latticeNumInColumn);
 
 
 /* init two diff roles */
