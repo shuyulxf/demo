@@ -5,15 +5,62 @@ html, body{
     height: 100%;
 }
 ul{
-    padding: 0;
+    padding: 0; 
 }
 li{
     list-style: none;
+}
+i{
+    font-style: normal;
+    display: inline-block;
 }
 body{
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.show{
+    display: block;
+}
+.dialog{
+    padding: 10px 20px;
+    border-radius: 3px;
+   
+}
+.dialog.error{
+    border: 1px solid #fea335;
+    box-shadow: 0 0 10px #fea335;
+}
+.dialog.success {
+    border: 1px solid #6dccac;
+    box-shadow: 0 0 10px #6dccac;
+}
+.dialog .title{
+    font-size: 14px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.dialog .dialog-main{
+    font-size: 12px;
+}
+.dialog .close{
+    position: absolute;
+    right: 8px;
+    top: 2px;
+    font-size: 12px;
+    color: #cdcdcd;
+}
+.dialog .close i{
+    display: inline-block;
+}
+.dialog .close i:first-child{
+    transform: rotate(45deg);
+    -webkit-transform: rotate(45deg) translate(6px, -6px);
+}
+.dialog .close i:last-child{
+    transform: rotate(-45deg);
+    -webkit-transform: rotate(-45deg);
 }
 .main{
     display: -webkit-flex;

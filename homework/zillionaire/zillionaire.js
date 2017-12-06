@@ -10,11 +10,10 @@ let isVarType = function() {
     }
 }
 isVarType();
-
+ 
 let isValidNumber = function(data) {
     return !isNaN(Number(data));
 }
-
 let toNumber = function(data) {
     
     if (isVarType.isString(data)) {
@@ -24,13 +23,60 @@ let toNumber = function(data) {
     }
 }
 
+let extend = function(obj1, obj2) {
+    
+    if (!isVarType.isObject(obj1)) obj1 = {};
+    if (!isVarType.isObject(obj2)) return obj1;
+
+    for (let key in obj2) {
+        obj1[key] = obj2[key] || obj1[key];
+    }
+
+    return obj1;
+}
+
+/* simple dialog */
+function SimpleDialog(opts) {
+
+    this.$container = opts.$container;
+    let options = {
+        title: "Dialog Title!",
+        type : "success",
+        html : ""
+    };
+
+    this.options = extend(options, opts);
+}
+SimpleDialog.prototype = {
+
+    show: function() {
+
+        this.$container.append(this.getInnerDialogNode());
+    },
+    getInnerDialogNode: function() {
+
+        let {title, type, html} = this.options;
+        let HTML = `<p class="title">${title}</p>
+                <div class="dialog-main">${html}</div>
+                <span class="close">
+                    <i>|</i>
+                    <i>|</i>
+                </span>
+            `;
+        let $dialog = document.createElement("dialog");
+        $dialog.innerHTML = HTML;
+        $dialog.className += "show dialog " + type;
+
+        return $dialog;
+    }
+}
+
 /* define game role class*/
 function GameRole(role, totalMoney) {
     this.role  = role;
     this.totalMoney = totalMoney;
     this.init();
 }
-
 GameRole.prototype = {
 
     init: function(){
@@ -67,7 +113,7 @@ GameRole.prototype = {
 }
 
 
-let Dice = function( ) {
+let Dice = function() {
 
 }
 
@@ -75,3 +121,8 @@ let Dice = function( ) {
 let role1 = new GameRole("role1"),
     role2 = new GameRole("role2");
 
+let dialog = new SimpleDialog({
+    $container: document.getElementsByTagName("body")[0],
+    html: "dddsdddddddd"
+});
+dialog.show();
