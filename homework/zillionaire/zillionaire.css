@@ -3,12 +3,14 @@ html, body, p, ul{
 }
 html, body{
     height: 100%;
+    -webkit-font-smoothing: antialiased;
 }
 ul{
     padding: 0; 
 }
 li{
     list-style: none;
+    position: relative;
 }
 i{
     font-style: normal;
@@ -27,7 +29,7 @@ body{
     border-radius: 3px;
     min-width: 110px;
 }
-.dialog.error{
+.dialog.warning{
     border: 1px solid #fea335;
     box-shadow: 0 0 10px #fea335;
 }
@@ -35,8 +37,10 @@ body{
     border: 1px solid #6dccac;
     box-shadow: 0 0 10px #6dccac;
 }
-.warning {
-    color: red;
+.error {
+    border: 1px solid rgb(230, 101, 101);
+    box-shadow: 0 0 10px rgb(230, 101, 101);
+    color: rgb(230, 101, 101);
 }
 .dialog .title{
     font-size: 14px;
@@ -46,6 +50,8 @@ body{
 }
 .dialog .dialog-main{
     font-size: 12px;
+    min-width: 100px;
+    min-height: 30px;
 }
 .dialog .close{
     position: absolute;
@@ -60,14 +66,14 @@ body{
 }
 .dialog .close i:first-child{
     transform: rotate(45deg);
-    -webkit-transform: rotate(45deg) translate(4px, -4px);
+    transform: rotate(45deg) translate(4px, -4px);
 }
 .mac .dialog .close i:first-child{
-    -webkit-transform: rotate(45deg) translate(4px, -4px);
+    transform: rotate(45deg) translate(2px, -2px);
 }
 .dialog .close i:last-child{
     transform: rotate(-45deg);
-    -webkit-transform: rotate(-45deg);
+    transform: rotate(-45deg);
 }
 
 .dialog .op-btns{
@@ -97,7 +103,7 @@ body{
     flex-direction: column;
     align-items: center;
     width: 550px;
-    height: 651px;
+    min-height: 651px;
     box-shadow: 0 0 15px #ccc;
 }
 .play-box{
@@ -105,6 +111,7 @@ body{
     display: flex;
     flex-direction: column;
 }
+
 .play-box .part-1, .play-box .part-2, .play-box .part-3 {
     display: flex;
 }
@@ -112,9 +119,7 @@ body{
     flex: 1;
     display: flex;
     align-items: flex-end;
-}
-.play-box .part-2{
-    flex: 2;
+    justify-content: center;
 }
 .play-box .part-2 li{
     height: 100%;
@@ -124,11 +129,68 @@ body{
 }
 .play-box .part-2-center{
     flex: 8;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 50px;;
 }
 .play-box .part-3{
     flex: 1;
 }
+.play-box .part-1 li, .play-box .part-3 li,.play-box .part-2 .part-2-left li, .play-box .part-2 .part-2-right li{
+    width: 50px;
+    height: 50px;
+    font-size: 12px;
+    text-align: center;
+    line-height: 50px;
+}
+/*
+.play-box .part-2 .part-2-left ul, .play-box .part-2 .part-2-right ul{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+}
+.play-box .part-2 .part-2-right {
+    align-items: flex-start;
+}*/
 
+.type-start{
+    color: #b05250;
+}
+.start{
+    display: inline-block;
+    background: #1cbb1d;
+    border-radius: 40px;
+    width: 40px;
+    height: 40px;
+    margin-top: 5px;
+    line-height: 40px;
+    color: #fff;
+}
+.type-prison{
+    color: #fff;
+}
+.type-award {
+    color: #fff;
+}
+.type-color-1{
+    background: #4f3842;
+}
+.type-color-2{
+    background: #e3746d;
+}
+.type-color-3{
+    background: #e5af67;
+}
+.type-color-4{
+    background: #6e8d63
+}
+.type-color-5{
+    background: #fac5b7;
+}
+
+
+/*
 .play-box .part-1 li, .play-box .part-3 li{
     display: inline-block;
     width: 50px;
@@ -149,11 +211,11 @@ body{
 .play-box .part-2 .part-2-left li:last-child, .play-box .part-2 .part-2-right li:last-child{
     border-bottom: none;
 }
+*/
 .dice{
     flex: 1;
     display: flex;
     justify-content: center;
-    align-items: center;
 }
 .dice-btn{
     width: 100px;
@@ -162,7 +224,51 @@ body{
     background: #87d0f3;
     border: 1px solid #87d0f3;
 }
-.score{
-    flex: 2;
+.dice-btn.disabled{
+    background: #cdcdcd;
+    border: 1px solid #cdcdcd;
 }
-
+.roles{
+    flex: 2;
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.roles table{
+    border-collapse: collapse;
+}
+.roles table td{
+    border: 1px solid #f1dfda;
+    border-collapse: collapse;
+    padding: 1px;
+    font-size: 12px;
+}
+.roles table.highlight{
+    box-shadow: 0 0 10px #fb3903;
+}
+.roles table.highlight td{
+    border: 1px solid #fb3903;
+}
+.dice-area{
+    width: 100px;
+    height: 100px;
+    border-radius: 100px;
+    border: 1px solid #87d0f3;
+    text-align: center;
+    line-height: 100px;
+    box-shadow: 0 0 12px #87d0f3;
+    color: #ce5c53f0;
+    font-size: 32px;
+}
+.role-img{
+    position: absolute;
+    top: 7px;
+}
+.font-hightlight{
+    color:red; font-size: 14px;
+}
+.tip{
+    line-height:1;
+    color:#b94b4b;
+    padding-top: 5px;
+}
