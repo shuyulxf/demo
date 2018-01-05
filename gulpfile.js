@@ -55,7 +55,8 @@ gulp.task('browserify', ['es6'], function() {
 gulp.task('connect', function () {
     connect.server({
         livereload: true,
-        port: 8000
+        port: 8000,
+        root: "./"
     });
 });
 gulp.task('html', function(){
@@ -72,9 +73,9 @@ gulp.task('js', function(){
 });
 
 gulp.task('watch', ['sass','es6'], function() {
-    gulp.watch(base + 'scss', ['sass']);
-    gulp.watch(base + 'es6', ['es6']);
-    gulp.watch('*.html', ['html'])
+    gulp.watch(base + '.scss', ['sass']);
+    gulp.watch(base + '.es6', ['es6']);
+    gulp.watch(base + '.html', ['html'])
 });
 
 gulp.task('default', ['sass', 'es6', 'connect','watch']);

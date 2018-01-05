@@ -1,0 +1,153 @@
+<script src="../js/lib/jquery-1.12.4.min.js"></script>
+<script src="../js/lib/bootstrap.min.js"></script>
+<script src="../js/lib/art-template.min.js"></script>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<style type="text/css">
+	.keyword .form-control{
+		width: auto;
+		display: inline-block;
+		vertical-align: middle;
+	}
+	.keyword .btn{
+		vertical-align: midde;
+	}
+	.keyword .btn-info{
+		margin-left: 25px;
+    }
+    .keyword .word{
+        display: inline-block;
+        vertical-align: middle;
+        border: 1px solid rgba(255, 80, 48, 0.5);
+        padding: 2px 5px;
+        margin-top: 8px;
+        margin: 8px 5px 4px;
+        border-radius: 3px;
+    }
+    .keyword .word:hover{
+        background: rgba(255, 80, 48, 0.5);
+        color: #fff;
+        cursor: pointer;
+    }
+    .keyword .word i{
+        font-style: normal;
+        padding-left: 5px;
+        font-size: 12px;
+    }
+	
+</style>
+<div class="keyword">
+    <input type="hidden" class="keyword-value"  value="话费,积分"/>
+    <input type="text" class="form-control keyword-input" placeholder="关键词" ${acsFa.formAttrNameValidation}>
+    <button type="button" class="btn btn-default add">添加</button>
+    <button type="button" class="btn btn-info search">搜索</button>
+    <div class="word-list"></div>
+</div>
+<script>
+	function Keyword(opts) {
+		
+		var defaultOpts = {
+            $el: null,
+            wordHtml: function(word){
+                return `<li data-word="${word}" class="word">${word}<i>X</i></li>`;
+            }
+		}
+        
+        if (opts == null || opts.$el == null) return null; 
+
+        this.options = $.extend(defaultOpts, opts);
+
+        var $el = defaultOpts.$el,
+            $keywordValues = $el.find(".keyword-value"),
+            initValue      = $keywordValues.val(),
+            $wordList      = $el.find(".word-list");
+        
+        this.options = $.extend(this.options, {
+            $keywordValues: $keywordValues,
+            initValue : initValue,
+            $wordList : $wordList,
+            $add      : $el.find(".add"),
+            $search   : $el.find(".search"),
+            $keywordInput : $el.find(".keyword-input")
+        });
+        
+		this.init();
+	}
+	
+	Keyword.prototype = {
+		init: function() {
+            var opts = this.options,
+                $el  = opts.$el,
+                $add = opts.$add,
+                $search   = opts.$search,
+                initValue = opts.initValue,
+                $wordList = opts.$wordList,
+                wordHtml  = opts.wordHtml,
+                $keywordValues = opts.$keywordValues,
+                $keywordInput  = opts.$keywordInput;
+            var that = this;
+
+            if (initValue != null) {
+                var words = initValue.split(","),
+                    len = words.length,
+                    lists = [];
+                for(var i = 0; i < len; i ++) {
+                    var word = $.trim(words[i]);
+                    if (word.length > 0) {
+                        lists.push(wordHtml(word));
+                    } 
+                }
+
+                $wordList.html(lists.join(""));
+            }
+            
+            $el.on("click", ".word i", function(){
+
+                var $this = $(this),
+                    $word = $this.closest(".word"),
+                    val   = $word.data("word"),
+                    words = $keywordValues.val();
+            
+                $word.remove();
+                var rgx = " *" + val + " *,? *";
+                words = words.replace(new RegExp(rgx), "");
+                $keywordValues.val(words.replace(/ *, *$/g, ""));
+               
+            });
+
+            $add.click(function(){
+                var word = $keywordInput.val(),
+                    words = $keywordValues.val();
+
+                var rgxTxt = "(^|[^a-zA-Z])+" + word +"($|[^a-zA-Z])+";
+                
+                if (word) {
+                    if (!(new RegExp(rgxTxt)).test(words)) {
+                        $wordList.append(wordHtml(word));
+                        if (words) words += ",";
+                        words += word;
+                        $keywordValues.val(words)
+                    } else {
+                        that.findWordLiByWord(word).addClass("duplicate");
+                    }
+                }
+               
+            });
+        },
+        findWordLiByWord: function(word) {
+            var opts = this.options,
+                $lis = opts.$wordList.find("li");
+            
+            var len = $lis.length;
+            for (var i = 0; i < len; i++) {
+                var $li = $($lis[i]);
+                if ($li.data("word") == word) return $li;
+            }
+            return null;
+        }
+	}
+    
+    var keyword = new Keyword({
+        $el: $(".keyword")
+    })
+</script>
+<script src="//localhost:35729/livereload.js?snipver=1" async="" defer=""></script>
