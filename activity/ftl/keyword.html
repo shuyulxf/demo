@@ -17,14 +17,14 @@
     .keyword .word{
         display: inline-block;
         vertical-align: middle;
-        border: 1px solid rgba(255, 80, 48, 0.5);
+        border: 1px solid rgba(255, 80, 48, 0.3);
         padding: 2px 5px;
         margin-top: 8px;
         margin: 8px 5px 4px;
         border-radius: 3px;
     }
     .keyword .word:hover{
-        background: rgba(255, 80, 48, 0.5);
+        background: rgba(255, 80, 48, 0.3);
         color: #fff;
         cursor: pointer;
     }
@@ -33,7 +33,9 @@
         padding-left: 5px;
         font-size: 12px;
     }
-	
+	.keyword .duplicate{
+        border: 1px solid red;
+    }
 </style>
 <div class="keyword">
     <input type="hidden" class="keyword-value"  value="话费,积分"/>
@@ -114,6 +116,11 @@
                
             });
 
+            $keywordInput.on("input", function() {
+                $wordList.find(".btn-danger").removeClass("btn-danger");
+                $wordList.find(".btn-success").removeClass("btn-success");
+            });
+
             $add.click(function(){
                 var word = $keywordInput.val(),
                     words = $keywordValues.val();
@@ -125,13 +132,22 @@
                         $wordList.append(wordHtml(word));
                         if (words) words += ",";
                         words += word;
-                        $keywordValues.val(words)
+                        $keywordValues.val(words);
                     } else {
-                        that.findWordLiByWord(word).addClass("duplicate");
+                        that.findWordLiByWord(word).addClass("btn-danger");
                     }
+                    $keywordInput.val("");
                 }
-               
             });
+
+            $search.click(function() {
+
+                var word = $keywordInput.val();
+                
+                if (word) {
+                    that.addSucInfoForSearch(word);
+                }
+            })
         },
         findWordLiByWord: function(word) {
             var opts = this.options,
@@ -143,6 +159,17 @@
                 if ($li.data("word") == word) return $li;
             }
             return null;
+        },
+        addSucInfoForSearch: function(word) {
+            var opts = this.options,
+                $lis = opts.$wordList.find("li");
+            
+            var len = $lis.length;
+            for (var i = 0; i < len; i++) {
+                var $li = $($lis[i]);
+                if ($li.data("word").indexOf(word) != -1 ) $li.addClass("btn-success");
+            }
+
         }
 	}
     

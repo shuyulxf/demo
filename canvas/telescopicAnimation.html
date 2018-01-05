@@ -1,0 +1,38 @@
+<html>
+<head>
+
+</head>
+<body>
+    <canvas id="test" width="400" height="400" style="background:#eaecc7;"></canvas>
+    <script src="../codes/jsCodes/base/judgeDataType.js"></script>
+    <script src="../codes/jsCodes/base/extend.js"></script>
+    <script src="js/telescopicAnimation.js"></script>
+    
+    <script>
+        var cxt = test.getContext('2d');
+        let a = new TetescopicAnimation( 
+                    {
+                        cxt : cxt,
+                        arcAttrs: {
+                            x : 30,
+                            y : 30,
+                            radius: 30
+                        },
+                        bgColor: 'rgba(0, 0, 0, 0.1)',
+                        innerColor: '#eaecc7',
+                        textAttrs: {
+                            shadowColor: 'rgba(100, 100, 150, 0.8)',
+                            fillStyle: 'cornflowerblue',
+                            strokeStyle: 'yellow',
+                            text: 'HTML5'
+                        }
+                    });
+        
+        test.onclick = function() {
+            a.animate();
+        }
+       
+       
+    </script>
+</body>
+</html>
