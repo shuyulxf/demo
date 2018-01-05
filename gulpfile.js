@@ -9,19 +9,20 @@ var gulp = require('gulp'),
     sourcemaps = require("gulp-sourcemaps"),
     source = require('vinyl-source-stream'),
     buffer = require('vinyl-buffer'),
-    $ = require('gulp-load-plugins')();
+    $ = require('gulp-load-plugins')(),
+    connect = require('gulp-connect');//livereload
 
 var dist = './dist/',
     base = './**/*';
 
-gulp.task('webserver', function() {
-  gulp.src('./')
-      .pipe(webserver({
-        livereload: true,
-        directoryListing: true,
-        open: true
-      })); 
-});
+// gulp.task('webserver', function() {
+//   gulp.src('./')
+//       .pipe(webserver({
+//         livereload: true,
+//         directoryListing: true,
+//         open: true
+//       })); 
+// });
 
 gulp.task('sass', function() {
     gulp.src('./*/*/*.scss')
@@ -36,6 +37,7 @@ gulp.task('es6', function() {
       }))
       .pipe(gulp.dest(dist));
 });
+
 gulp.task('browserify', ['es6'], function() {
   var b = browserify({
       entries: "./dist/elements/main.js",
@@ -49,13 +51,30 @@ gulp.task('browserify', ['es6'], function() {
       .pipe(gulp.dest(dist));
 });
 
-
-
-gulp.task('watch', ['sass','es6'], function() {
-  gulp.watch(base + 'scss', ['sass']);
-  gulp.watch(base + 'es6', ['es6']);
+ //定义livereload任务
+gulp.task('connect', function () {
+    connect.server({
+        livereload: true,
+        port: 8000
+    });
+});
+gulp.task('html', function(){
+    gulp.src(base+'.html')
+        .pipe(connect.reload());
+});
+gulp.task('css', function(){
+    gulp.src(base+'.css')
+        .pipe(connect.reload());
+});
+gulp.task('js', function(){
+    gulp.src(base+'.js')
+        .pipe(connect.reload());
 });
 
+gulp.task('watch', ['sass','es6'], function() {
+    gulp.watch(base + 'scss', ['sass']);
+    gulp.watch(base + 'es6', ['es6']);
+    gulp.watch('*.html', ['html'])
+});
 
-
-gulp.task('default', ['webserver','sass', 'es6', 'watch']);
+gulp.task('default', ['sass', 'es6', 'connect','watch']);

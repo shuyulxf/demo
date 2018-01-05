@@ -5,6 +5,7 @@ let isMac = (function(){
 let osTypeClass = "windows";
 if (isMac) osTypeClass = "mac";
 document.getElementsByTagName("body")[0].className += osTypeClass;
+
 /* data type*/
 let isVarType = function() {
 
