@@ -1,0 +1,81 @@
+<script src="../js/lib/jquery-1.12.4.min.js"></script>
+<script src="../js/lib/bootstrap.min.js"></script>
+<script src="../js/lib/art-template.min.js"></script>
+<link rel="stylesheet" href="../css/bootstrap.min.css">
+<style type="text/css">
+	.number .number-input{
+        width: 60px;
+        border: 1px solid rgb(204, 204, 204);
+    }
+    .number .btn-error{
+        border: 1px solid #d9534f;
+        z-index: 1;
+    }
+</style>
+<div class="number btn-group">
+   
+    <button type="button" class="btn btn-default sub-num">-</button>
+    <input type="text" class="btn btn-default number-input" value="0" number/>
+    <button type="button" class="btn btn-default add-num">+</button>
+</div>
+<script>
+	function NumberWidget(opts) {
+
+        var defaultOpts = {
+            $el: null
+		}
+
+        var $el = opts.$el;
+        if (!$el || $el.length == 0) return null;
+
+        this.options = $.extend(defaultOpts, opts, {
+            $subNum: $el.find(".sub-num"),
+            $addNum: $el.find(".add-num"),
+            $numIpt: $el.find(".number-input")
+        });
+
+        this.init();
+    }
+    NumberWidget.prototype = {
+        init: function() {
+            var opts = this.options,
+                $subNum = opts.$subNum,
+                $addNum = opts.$addNum,
+                $numIpt = opts.$numIpt;
+
+            var rgx = /^ *[\d]+ *$/g;
+            $subNum.click(function() {
+                rgx.lastIndex = 0;
+                var val = $numIpt.val();
+                if (rgx.test(val) && +val > 0) {
+                    $numIpt.removeClass("btn-error");
+                    $numIpt.val((+val)-1);
+                }
+                else $numIpt.addClass("btn-error");
+            });
+
+            $addNum.click(function(){
+
+                rgx.lastIndex = 0;
+                var val = $numIpt.val();
+                if (rgx.test(val)) {
+                    $numIpt.removeClass("btn-error");
+                    $numIpt.val((+val)+1);
+                }
+                else $numIpt.addClass("btn-error");
+            })
+
+            $numIpt.on("input", function() {
+                rgx.lastIndex = 0;
+                var val = $numIpt.val();
+                if (!rgx.test(val)) $numIpt.addClass("btn-error");
+                else $numIpt.removeClass("btn-error");
+            })
+        }
+    }
+
+    var nw = new NumberWidget({
+        $el: $(".number")
+    })
+</script>
+<script src="//localhost:35729/livereload.js?snipver=1" async="" defer=""></script>
