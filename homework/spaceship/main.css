@@ -1,0 +1,173 @@
+html, body, p, ul{
+    margin: 0;
+}
+html, body{
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+}
+ul{
+    padding: 0; 
+}
+li{
+    list-style: none;
+    position: relative;
+}
+i{
+    font-style: normal;
+    display: inline-block;
+}
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    min-height: 680px;
+}
+.show{
+    display: block;
+}
+.dialog{
+    padding: 10px 20px;
+    border-radius: 3px;
+    min-width: 110px;
+}
+.dialog.warning{
+    border: 1px solid #fea335;
+    box-shadow: 0 0 10px #fea335;
+}
+.dialog.success {
+    border: 1px solid #6dccac;
+    box-shadow: 0 0 10px #6dccac;
+}
+.error {
+    border: 1px solid rgb(230, 101, 101);
+    box-shadow: 0 0 10px rgb(230, 101, 101);
+    color: rgb(230, 101, 101);
+}
+.dialog .title{
+    font-size: 14px;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
+    text-align: center;
+}
+.dialog .dialog-main{
+    font-size: 12px;
+    min-width: 100px;
+}
+.dialog .close{
+    position: absolute;
+    right: 8px;
+    top: 2px;
+    font-size: 12px;
+    color: #cdcdcd;
+}
+.dialog .close i{
+    display: inline-block;
+    cursor: pointer;
+}
+.dialog .close i:first-child{
+    transform: rotate(45deg);
+    transform: rotate(45deg) translate(4px, -4px);
+}
+.mac .dialog .close i:first-child{
+    transform: rotate(45deg) translate(2px, -2px);
+}
+.dialog .close i:last-child{
+    transform: rotate(-45deg);
+    transform: rotate(-45deg);
+}
+
+.dialog .op-btns{
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-evenly;
+}
+.dialog .op-btns button{
+    -webkit-appearance: none;
+    border: none;
+    color: #fff;
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    outline: none;
+}
+.dialog .op-btns .sure{
+    background: #6dccac;
+}
+.dialog .op-btns .cancel{
+    background: #eee;
+}
+.main{
+    padding: 20px 0;
+    margin: 0 auto;
+}
+.cells,.cell{
+    border: 1px solid #FF9933;
+    border-width: 2px;
+    border-collapse: collapse;
+}
+.cell{
+    width: 40px;
+    height: 40px;
+}
+.cell input{
+    width: 100%;
+    height: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+}
+.btn{
+    background: rgba(255, 153, 51, 0.8);
+    border: none;
+    color: white;
+    padding: 8px 20px;
+    border-radius: 3px;
+    outline: none;
+}
+.btn:hover{
+    background: rgba(255, 153, 51, 1);
+    cursor: pointer;
+}
+.info{
+    padding: 0 0 20px;
+}
+/* Border styles */
+.table{
+    border-collapse: collapse;
+    border: none;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(230, 189, 189);
+}
+.table thead, .table tr {
+    border: none;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(230, 189, 189);
+}
+
+
+/* Padding and font style */
+.table td, .table th {
+    padding: 4px 10px;
+    font-size: 12px;
+    font-family: Verdana;
+    color: rgb(177, 106, 104);
+    max-width: 200px;
+}
+
+/* Alternating background colors */
+.table tr:nth-child(even) {
+    background: rgb(238, 211, 210)
+}
+.table tr:nth-child(odd) {
+    background: #FFF
+}
+.hide{
+    display: none;
+}
+.show{
+    display: table;
+}
