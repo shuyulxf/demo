@@ -154,6 +154,9 @@ let KEYNUMS = {
     'u': 0
 }
 
+let USERSPACECOORD = null;
+let ROBOTSPACECOORDLIST = [];
+
 function Cell(opts) {
     
     let that = this;
@@ -165,7 +168,9 @@ function Cell(opts) {
 
     this.options = extend(options, opts);
 
-    this.init();
+    let cb = opts.callback;
+
+    this.init(cb);
 }
 
 Cell.prototype = {
@@ -181,6 +186,7 @@ Cell.prototype = {
 
         let $c = opts.$container;
         $c.append($cell);
+
 
         let isKey = function(key) {
       
@@ -204,7 +210,6 @@ Cell.prototype = {
             if (isKey(selTxt)) {
                 opts.key = '';
                 KEYNUMS[selTxt] -= 1;
-                console.log(KEYNUMS)
             }
 
             if (!isKey(key)) {
@@ -222,9 +227,10 @@ Cell.prototype = {
                 } else {
                     opts.key = key;
                     KEYNUMS[key] += 1;
-                    console.log(KEYNUMS)
+                    
                 }
-            }
+                console.log(KEYNUMS)
+            }     
         });
    
 
@@ -233,14 +239,14 @@ Cell.prototype = {
                 key = opts.key;
             if (isKey(key) && !$ipt.value) {
                 opts.key = '';
-                KEYNUMS[key]--; console.log(KEYNUMS)
+                KEYNUMS[key]--;
             } 
         });
 
         this.$cell = $cell;
         this.$ipt = $ipt;
     },
-    edit: function(v) {
+    update: function(v) {
         this.$ipt.value = v;
     },
     setReadOnly: function() {
@@ -255,7 +261,17 @@ let STAGE = '',
     $stage = document.getElementsByClassName("top")[0],
     $btn = document.getElementsByClassName("btn")[0],
     cells = new Array(),
-    $table = document.getElementsByClassName("table")[0];
+    $table = document.getElementsByClassName("table")[0],
+    $round = document.getElementsByClassName("round")[0],
+    $numForMine = document.getElementsByClassName("numForMine")[0],
+    $numForRS= document.getElementsByClassName("numForRS")[0];
+
+let ROUND = 0;
+
+let RoundAutoIncrement = function() {
+    ROUND++;
+    $round.innerHTML = ROUND;
+}
 
 let changeStage = function(idx) {
 
@@ -287,6 +303,25 @@ let changeStage = function(idx) {
     INITIDX = idx;
 }
 
+let updateUserCoord = function() {
+    
+    if (arguments.length < 2) return;
+
+    USERSPACECOORD = {
+        x: arguments[0],
+        y: arguments[1]
+    };
+}
+let updateRobotCoordList = function() {
+
+    if (arguments.length < 2) return;
+
+    ROBOTSPACECOORDLIST.push({
+        x: arguments[0],
+        y: arguments[1]
+    })
+}
+
 let init = function(p) {
 
     // init stage
@@ -316,6 +351,7 @@ let init = function(p) {
 }
 
 init(PARAMS);
+
 let setCellsReadOnly = function() {
     let ws = PARAMS.ws,
         hs = PARAMS.hs;
@@ -326,6 +362,8 @@ let setCellsReadOnly = function() {
         }
     }
 }
+
+
 $btn.addEventListener("click", function(e){
     switch(INITIDX) {
         case 0:
@@ -352,6 +390,7 @@ $btn.addEventListener("click", function(e){
             } else {
                 setCellsReadOnly();
                 changeStage(1);
+                RoundAutoIncrement();
             }
             break;
         case 1:
@@ -359,5 +398,9 @@ $btn.addEventListener("click", function(e){
         default:
             break;
     }
-    
 });
+
+document.addEventListener("keydown", function(e) {
+    let key = e.key;
+
+})
