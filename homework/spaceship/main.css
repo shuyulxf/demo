@@ -99,7 +99,7 @@ body{
     background: #eee;
 }
 .main{
-    padding: 20px 0;
+    padding: 20px 0 5px;
     margin: 0 auto;
 }
 .cells,.cell{
@@ -132,6 +132,13 @@ body{
 }
 .info{
     padding: 0 0 20px;
+    text-align: center;
+}
+.tip{
+    display: inline-block;
+    padding-bottom: 5px;
+    font-size: 14px;
+    color: red;
 }
 /* Border styles */
 .table{

@@ -145,25 +145,29 @@ let PARAMS = {
     "onlykey": 'u',
     "stages": ["Setup", "Play", "End"],
     "moves": {
-        'a' : {
-            x: 0,
-            y: -1
-        },
-        'd' : {
-            x: 0,
-            y: 1
-        },
-        'w' : {
-            x: -1,
-            y: 0
-        },
-        's' : {
-            x: 1,
-            y: 0
-        }
-    }
+        'a' : {x: 0, y: -1},
+        'd' : {x: 0, y: 1},
+        'w' : {x: -1, y: 0},
+        's' : {x: 1, y: 0}
+    },
+    "robotMoves": [
+        {x: -1,y: -1},
+        {x: -1, y: 1},
+        {x: -1, y: 1},
+        {x: 1, y: 1},
+        {x: 0, y: -1},
+        {x: 0, y: 1},
+        {x: -1, y: 0},
+        {x: 1, y: 0}
+    ]
 }
+var robotMoves = [
+    
+];
+var ml = PARAMS.moves.length;
+for (var i = 0; i < ml; i++) {
 
+}
 let KEYNUMS = {
     'a': 0,
     'm': 0,
@@ -218,8 +222,6 @@ Cell.prototype = {
             return false;
         }
 
-        let updateUserCoord = that.updateUserCoord,
-            updateRobotCoordList = that.updateRobotCoordList;
 
         let $ipt = $cell.getElementsByTagName("input")[0];
         $cell.addEventListener("keydown", function(e) {
@@ -235,7 +237,7 @@ Cell.prototype = {
             if (isKey(selTxt)) {
                 that.key = '';
                 KEYNUMS[selTxt] -= 1;
-                if (selTxt == 'r') updateRobotCoordList(that, true);
+                if (selTxt == 'r') that.updateRobotCoordList(that, true);
             }
 
             if (!isKey(key)) {
@@ -253,8 +255,8 @@ Cell.prototype = {
                 } else {
                     that.key = key;
                     KEYNUMS[key] += 1;
-                    if (key == 'r') updateRobotCoordList(that);
-                    else if(key == 'u') updateUserCoord(that);
+                    if (key == 'r') that.updateRobotCoordList();
+                    else if(key == 'u') that.updateUserCoord();
                 }
                 console.log(KEYNUMS)
             }     
@@ -267,7 +269,7 @@ Cell.prototype = {
             if (isKey(key) && !$ipt.value) {
                 that.key = '';
                 KEYNUMS[key]--;
-                if (key == 'r') updateRobotCoordList(that, true);
+                if (key == 'r') updateRobotCoordList(true);
             } 
         });
 
@@ -275,20 +277,17 @@ Cell.prototype = {
         this.$ipt = $ipt;
     },
     updateUserCoord: function() {
-    
-        if (arguments.length < 1) return;
 
-        USERSPACECOORD = arguments[0];
+        USERSPACECOORD = this;
     },
     updateRobotCoordList: function() {
 
         var len = arguments.length;
-        if (len < 1) return;
-        else if (len == 1) {
-            ROBOTSPACECOORDLIST.push(arguments[0]);
+        if (len <= 0) {
+            ROBOTSPACECOORDLIST.push(this);
         } else {
-            if (arguments[1]) {
-                var item = arguments[0],
+            if (arguments[0]) {
+                var item = this,
                     l = ROBOTSPACECOORDLIST.length;
                 for (var i = 0; i < l; i++) {
                     if (item == ROBOTSPACECOORDLIST[i]) {
@@ -339,6 +338,8 @@ var initStatus = function() {
         $table.className = className;
     } else {
         $table.className += " show";
+        var $tip = document.getElementsByClassName("tip")[0];
+        $tip.className = $tip.className.replace("hide", '');
     }
     $round.innerHTML = ROUND;
     $numForMine.innerHTML = KEYNUMS['m'];
@@ -443,23 +444,48 @@ $btn.addEventListener("click", function(e){
             }
             break;
         case 1:
+            changeStage(2);
+            showResult();
             break;
         default:
             break;
     }
 });
 
+var isValidPos = function(x, y) {
+
+    var  ws = PARAMS.ws,
+         hs = PARAMS.hs;
+
+    if (x < 0 || x >= ws || y < 0 || y >= hs) return false;
+    return true;
+}
+var showResult = function() {
+
+    var msg = " Win!";
+    if (USERSPACECOORD == null) {
+        msg = "User" + msg;
+    } else if (ROBOTSPACECOORDLIST.length == 0){
+        msg = "Robot" + msg;
+    } else {
+        msg = "Draw!";
+    }
+
+    showDialog({
+        html: msg,
+        type: "error"
+    });
+
+}
 var move = function(d, cell) {
 
     var dx = d.x, 
         dy = d.y,
-        ws = PARAMS.ws,
-        hs = PARAMS.hs,
         x = cell.x,
         y = cell.y,
         k = cell.key;
     
-    if (x + dx < 0 || x + dx >= ws || y + dy < 0 || y + dy >= hs) {
+    if (!isValidPos(x + dx, y + dy)) {
         showDialog({
             html: "You Will be Outside The Grid, Your Op Fialed!",
             type: "error"
@@ -470,25 +496,68 @@ var move = function(d, cell) {
         return;
     }
 
-    var des = cells[x + dx][y + dy];
-    if (!des.key) {
+    var ks = k.split(" ");
+    if (ks.length > 1) {
+        cell.key = ks[0];
+        cell.$ipt.value = ks[0];
+        k = ks[1];
+    } else {
         cell.key = '';
-        des.key = k;
         cell.$ipt.value = '';
-        des.$ipt.value = k;
-        
-    } else if(des.key == 'm') {
-        cell.key = '';
-        des.key = k;
-        cell.$ipt.value = '';
-        des.$ipt.value += " " + k;
-        updateMineNum();
     }
 
-    USERSPACECOORD = des;
+    var nx = x + dx,
+        ny = y + dy;
+    var des = cells[nx][ny],
+        dk = des.key;
+    if (!dk) {
+        des.key = k;
+        des.$ipt.value = k;
+    } else if(dk == 'm' || dk == 'M') {
+        var nKey = dk.toLocaleUpperCase() + " " + k;
+        des.key = nKey;
+        des.$ipt.value = nKey;
+        updateMineNum();
+        if (dk == 'm') {
+            var moves = PARAMS.moves;
+            for (var mn in moves) {
+                var move = moves[mn];
+                var tx = move.x + nx,
+                    ty = move.y + ny;
+                if (isValidPos(tx, ty)) {
+                    var tc = cells[tx][ty],
+                        tk = tc.key;
+                    if (tk == 'r' || tk == 'a') {
+                        if (tk == 'r') {
+                            updateRSNum();
+                            tc.updateRobotCoordList(true);
+                        }
+                        tc.key = '';
+                        tc.$ipt.value = '';
+                    } 
+                }
+            }
+
+            if (ROBOTSPACECOORDLIST.length == 0) {
+                changeStage(2);
+            }
+        }
+    } else if (dk == 'r') {
+        cell.key = '';
+        cell.$ipt.value = '';
+        USERSPACECOORD = null;
+        changeStage(2);
+    }
+
+    if (INITIDX == 2) {
+        showResult();
+        return;
+    }
+
+    des.updateUserCoord();
     TURN = 1; 
     robotMove(d); // will the robot's turn????????????????
-
+    updateRound();
 }
 
 var robotMove = function(d) {
