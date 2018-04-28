@@ -143,8 +143,25 @@ let PARAMS = {
     "hs": 10,
     "keys": ['a', 'm', 'r', 'u'],
     "onlykey": 'u',
-    "cmd": ['a', 'd', 'w', 's'],
-    "stages": ["Setup", "Play", "End"]
+    "stages": ["Setup", "Play", "End"],
+    "moves": {
+        'a' : {
+            x: -1,
+            y: 0
+        },
+        'd' : {
+            x: 1,
+            y: 0
+        },
+        'w' : {
+            x: 0,
+            y: -1
+        },
+        's' : {
+            x: 0,
+            y: 1
+        }
+    }
 }
 
 let KEYNUMS = {
@@ -168,9 +185,12 @@ function Cell(opts) {
 
     this.options = extend(options, opts);
 
+    this.x = options.x;
+    this.y = options.y;
+
     let cb = opts.callback;
 
-    this.init(cb);
+    this.init();
 }
 
 Cell.prototype = {
@@ -198,9 +218,14 @@ Cell.prototype = {
             return false;
         }
 
+        let updateUserCoord = that.updateUserCoord,
+            updateRobotCoordList = that.updateRobotCoordList;
+
         let $ipt = $cell.getElementsByTagName("input")[0];
         $cell.addEventListener("keydown", function(e) {
-   
+            
+            if (INITIDX != 0) return;
+
             let key = e.key,
                 value = $ipt.value;
 
@@ -210,6 +235,7 @@ Cell.prototype = {
             if (isKey(selTxt)) {
                 opts.key = '';
                 KEYNUMS[selTxt] -= 1;
+                if (selTxt == 'r') updateRobotCoordList(that, true);
             }
 
             if (!isKey(key)) {
@@ -227,7 +253,8 @@ Cell.prototype = {
                 } else {
                     opts.key = key;
                     KEYNUMS[key] += 1;
-                    
+                    if (key == 'r') updateRobotCoordList(that);
+                    else if(key == 'u') updateUserCoord(that);
                 }
                 console.log(KEYNUMS)
             }     
@@ -240,11 +267,36 @@ Cell.prototype = {
             if (isKey(key) && !$ipt.value) {
                 opts.key = '';
                 KEYNUMS[key]--;
+                if (key == 'r') updateRobotCoordList(that, true);
             } 
         });
 
         this.$cell = $cell;
         this.$ipt = $ipt;
+    },
+    updateUserCoord: function() {
+    
+        if (arguments.length < 1) return;
+
+        USERSPACECOORD = arguments[0];
+    },
+    updateRobotCoordList: function() {
+
+        var len = arguments.length;
+        if (len < 1) return;
+        else if (len == 1) {
+            ROBOTSPACECOORDLIST.push(arguments[0]);
+        } else {
+            if (arguments[1]) {
+                var item = arguments[0],
+                    l = ROBOTSPACECOORDLIST.length;
+                for (var i = 0; i < l; i++) {
+                    if (item == ROBOTSPACECOORDLIST[i]) {
+                        ROBOTSPACECOORDLIST.splice(i, 1);
+                    }
+                }
+            }
+        }
     },
     update: function(v) {
         this.$ipt.value = v;
@@ -266,7 +318,8 @@ let STAGE = '',
     $numForMine = document.getElementsByClassName("numForMine")[0],
     $numForRS= document.getElementsByClassName("numForRS")[0];
 
-let ROUND = 0;
+let ROUND = 0,
+    TURN = 0; // TURN has two value 0 and 1. 0 is the user turn, 0 is the robot turn.
 
 let RoundAutoIncrement = function() {
     ROUND++;
@@ -303,24 +356,6 @@ let changeStage = function(idx) {
     INITIDX = idx;
 }
 
-let updateUserCoord = function() {
-    
-    if (arguments.length < 2) return;
-
-    USERSPACECOORD = {
-        x: arguments[0],
-        y: arguments[1]
-    };
-}
-let updateRobotCoordList = function() {
-
-    if (arguments.length < 2) return;
-
-    ROBOTSPACECOORDLIST.push({
-        x: arguments[0],
-        y: arguments[1]
-    })
-}
 
 let init = function(p) {
 
@@ -400,7 +435,42 @@ $btn.addEventListener("click", function(e){
     }
 });
 
-document.addEventListener("keydown", function(e) {
-    let key = e.key;
+let move = function(d, cell) {
 
-})
+    var dx = d.x, 
+        dy = d.y,
+        ws = PARAMS.ws,
+        hs = PARAMS.hs,
+        x = cell.x,
+        y = cell.y;
+    
+    if (x + dx < 0 || x + dx >= ws || y + dy < 0 || y + dy >= hs) {
+        showDialog({
+            html: "You Will be Outside The Grid, Your Op Fialed!",
+            type: "error"
+        });
+        TURN = 1; // will the robot's turn????????????????
+        return;
+    }
+
+}
+
+document.addEventListener("keydown", function(e) {
+    
+    if (TURN != 0 || INITIDX != 1) return;
+
+    let key = e.key,
+        moves = PARAMS.moves;
+
+    switch(key) {
+        case 'a': case 'd': case 'w':case 's':
+            move(moves[key], USERSPACECOORD);
+            break;
+        default:
+            showDialog({
+                html: "You should type one of letters 'a','d','w','s'!",
+                type: "error"
+            });
+            break;
+    }
+});
