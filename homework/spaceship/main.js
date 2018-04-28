@@ -233,7 +233,7 @@ Cell.prototype = {
 
             if (value && value.length > 0 && !selTxt) return;
             if (isKey(selTxt)) {
-                opts.key = '';
+                that.key = '';
                 KEYNUMS[selTxt] -= 1;
                 if (selTxt == 'r') updateRobotCoordList(that, true);
             }
@@ -251,7 +251,7 @@ Cell.prototype = {
                         type: "error"
                     });
                 } else {
-                    opts.key = key;
+                    that.key = key;
                     KEYNUMS[key] += 1;
                     if (key == 'r') updateRobotCoordList(that);
                     else if(key == 'u') updateUserCoord(that);
@@ -263,9 +263,9 @@ Cell.prototype = {
 
         $cell.addEventListener("keyup", function(e){
             let code = e.keyCode,
-                key = opts.key;
+                key = that.key;
             if (isKey(key) && !$ipt.value) {
-                opts.key = '';
+                that.key = '';
                 KEYNUMS[key]--;
                 if (key == 'r') updateRobotCoordList(that, true);
             } 
@@ -435,23 +435,39 @@ $btn.addEventListener("click", function(e){
     }
 });
 
-let move = function(d, cell) {
+var move = function(d, cell) {
 
     var dx = d.x, 
         dy = d.y,
         ws = PARAMS.ws,
         hs = PARAMS.hs,
         x = cell.x,
-        y = cell.y;
+        y = cell.y,
+        k = cell.key;
     
     if (x + dx < 0 || x + dx >= ws || y + dy < 0 || y + dy >= hs) {
         showDialog({
             html: "You Will be Outside The Grid, Your Op Fialed!",
             type: "error"
         });
-        TURN = 1; // will the robot's turn????????????????
+        TURN = 1; 
+        robotMove(d); // will the robot's turn????????????????
         return;
     }
+
+    var des = cells[x + dx][y + dy];
+    if (!des.key) {
+        cell.key = '';
+        des.key = k;
+        cell.$ipt.value = '';
+        des.$ipt.value = k;
+        TURN = 1; 
+        robotMove(d); // will the robot's turn????????????????
+    }
+
+}
+
+var robotMove = function(d) {
 
 }
 
