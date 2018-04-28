@@ -15,14 +15,16 @@
 <div class="number btn-group">
    
     <button type="button" class="btn btn-default sub-num">-</button>
-    <input type="text" class="btn btn-default number-input" value="0" number/>
+    <input type="text" class="btn btn-default number-input" number/>
     <button type="button" class="btn btn-default add-num">+</button>
 </div>
 <script>
 	function NumberWidget(opts) {
 
         var defaultOpts = {
-            $el: null
+            $el: null,
+            min: 0,
+            max: null
 		}
 
         var $el = opts.$el;
@@ -41,13 +43,18 @@
             var opts = this.options,
                 $subNum = opts.$subNum,
                 $addNum = opts.$addNum,
-                $numIpt = opts.$numIpt;
+                $numIpt = opts.$numIpt,
+                min = opts.min,
+                max = opts.max;  
+            
+            var v = $numIpt.val();
+            if (!v) $numIpt.val(min);
 
             var rgx = /^ *[\d]+ *$/g;
             $subNum.click(function() {
                 rgx.lastIndex = 0;
                 var val = $numIpt.val();
-                if (rgx.test(val) && +val > 0) {
+                if (rgx.test(val) && +val > min) {
                     $numIpt.removeClass("btn-error");
                     $numIpt.val((+val)-1);
                 }
@@ -58,7 +65,7 @@
 
                 rgx.lastIndex = 0;
                 var val = $numIpt.val();
-                if (rgx.test(val)) {
+                if (rgx.test(val) && +val < max) {
                     $numIpt.removeClass("btn-error");
                     $numIpt.val((+val)+1);
                 }
@@ -75,7 +82,9 @@
     }
 
     var nw = new NumberWidget({
-        $el: $(".number")
+        $el: $(".number"),
+        min: 5,
+        max: 10
     })
 </script>
 <script src="//localhost:35729/livereload.js?snipver=1" async="" defer=""></script>

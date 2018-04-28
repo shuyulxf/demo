@@ -1,0 +1,44 @@
+<input name="test" type="radio" checked value="1"/>
+<input name="test" type="radio" value="2"/>
+<textarea id="txt">dd</textarea>
+<script src="../js/lib/jquery-1.12.4.min.js"></script>
+<script>
+    //how to get checked radio
+    var $check = 
+    $("[name=test]").on("change", function() {
+        var val = $("[name=test]:checked").val();
+        console.log(val);
+    });
+
+    var minRows = 5;
+    // 最大高度，超过则出现滚动条
+    var maxRows = 12;
+    function autoResize(){
+        var t = document.getElementById('txt');
+        if (t.scrollTop == 0) t.scrollTop=1;
+        while (t.scrollTop == 0){
+            if (t.rows > minRows)
+                t.rows--;
+            else
+                break;
+            t.scrollTop = 1;
+            if (t.rows < maxRows)
+                t.style.overflowY = "hidden";
+            if (t.scrollTop > 0){
+                t.rows++;
+                break;
+            }
+        }
+        while(t.scrollTop > 0){
+            if (t.rows < maxRows){
+                t.rows++;
+                if (t.scrollTop == 0) t.scrollTop=1;
+            }
+            else{
+                t.style.overflowY = "auto";
+                break;
+            }
+        }
+    }
+    autoResize()
+</script>

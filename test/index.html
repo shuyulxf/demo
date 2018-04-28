@@ -1,0 +1,39 @@
+<html>
+    <head></head>
+    <body>
+        <div id="page">
+            <div class="content main">
+                <div class="refer">
+                    <ul>
+                        <li>1</li>
+                        <li>2</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </body>
+    <script>
+        function get(ele) {
+            var p = ele.parentNode;
+            var rlt = [];
+            
+            while (p != document) {
+                if (p.id) rlt.unshift(p.id);
+                else if (p.className) {
+                    var temp = p.className.split(" ");
+                    for (var i = 0; i < temp.length; i++) {
+                        if(temp[i]) temp[i] = "." + temp[i];
+                    }
+                    rlt.unshift(temp.join(""));
+                } else{
+                    rlt.unshift(p.tagName.toLowerCase());
+                }
+                p = p.parentNode;
+            } 
+           return rlt.join(" ");
+        }
+        document.addEventListener("click", function(e) {
+            console.log(get(e.target));
+        })
+    </script>
+</html>

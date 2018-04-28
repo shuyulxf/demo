@@ -1,0 +1,26 @@
+
+function boolean isOnline(Timestamp startTime, Timestamp endTime){
+
+	Timestamp t = Base.toTimeStamp();
+	if (t.before(startTime) || t.after(endTime)) return false;
+	return true;
+}
+
+rule "CEHCK_ACTIVITY_IS_ONLINE_FAIL"
+   agenda-group "55"
+   lock-on-active true
+   activation-group "CHECK_ACTIVITY_TIME_ACTIVATION_GROUP"
+   salience 109
+when 
+   	 $activity: Activity()
+   	 $rer: RuleExResult()
+   	 $aer: ActivityExResult()
+ 	 eval(!isOnline($activity.getActivityStartTime(), $activity.getActivityEndTime()))
+then
+	 $aer.setStatus(1);
+	 String[] formAttrs = {"activityStartTime", "activityEndTime"};
+	 $aer.setMsg(GlobalFuncForRules.getReplyForRule($activity, formAttrs, 1));
+end
+
+
+

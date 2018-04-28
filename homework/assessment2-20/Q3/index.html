@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question 3</title>
+    <style>
+       body{
+        -webkit-font-smoothing: antialiased;
+       }
+       .form-control{
+            margin: 10px;
+       }
+       .form-control input{
+            padding: 5px 10px;
+            border-radius: 3px;
+            border: 1px solid #fdaebe;
+            margin-left: 10px;
+       }
+       .form-control select {
+           margin-left: 10px;
+       }
+       .form-control label {
+            display: inline-block;
+            width: 105px;
+       }
+       .form-control button{
+            padding: 4px 10px;
+            border-left: none;
+            border-radius: 3px;
+            background: #fdaebe;
+            border: 1px solid #fdaebe;
+            color: #fff;
+        }
+    </style>
+</head>
+<body>
+    <form action="#nogo" id="detail">
+        <div class="form-control">
+            <label>First Name:</label><input id="firstName" name="firstName" placeholder="first name"/>
+        </div>
+        <div class="form-control">
+            <label>Last Name:</label><input id="lastName" name="lastName" placeholder="last name"/>
+        </div>
+        <div class="form-control">
+            <label>Date of Birth:</label><input id="birthday" name="birthday" type="date" placeholder="date of birth"/>
+        </div>
+        <div class="form-control">
+            <label>Eye Color:</label><select id="eyeColor" name="eyeColor">
+                <option value="">Select Eye Color</option>
+                <option value="Blue">Blue</option>
+                <option value="Brown">Brown</option>
+                <option value="Green">Green</option>
+                <option value="Grey">Grey</option>
+                <option value="Other">Other</option>
+            </select>
+        </div>
+        <div class="form-control">
+            <button id="display" type="button">Display</button>
+            <button id="reset" type="button">Reset</button>
+        </div>
+    </form>
+    <section id="content">
+       
+    </section>
+    <script>
+        function clearForm(form) {
+
+            var inputs = form.querySelectorAll("input"),
+                len1 = inputs.length;
+            for(var i = 0; i < len1; i++) {
+                inputs[i].value = '';
+            }
+
+            var selects = form.querySelectorAll("select"),
+                len2 = selects.length;
+            for(var i = 0; i < len2; i++) {
+                selects[i].value = '';
+            }
+
+        }
+
+        function collectInfo() {
+            var fn = firstName.value,
+                ln = lastName.value,
+                bd = birthday.value,
+                ec = eyeColor.value;
+            
+            var info = "";
+            if (fn || ln) {
+                info += "Full Name: ";
+                if (fn) info += fn + " ";
+                if (ln) info += ln;
+            }
+           
+            if (bd) {
+                info += ", Date of Birth: " + bd;
+            }
+            if (ec) {
+                info += ", Eye Color: " + ec;
+            }
+            return info+"<br>";
+        }
+
+        reset.addEventListener("click", function() {
+            clearForm(detail);
+        });
+
+        display.addEventListener("click", function() {
+            var innerHTML = content.innerHTML;
+            content.innerHTML = innerHTML + collectInfo();
+            clearForm(detail);
+        })
+    </script>
+</body>
+</html>
