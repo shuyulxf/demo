@@ -146,20 +146,20 @@ let PARAMS = {
     "stages": ["Setup", "Play", "End"],
     "moves": {
         'a' : {
-            x: -1,
-            y: 0
-        },
-        'd' : {
-            x: 1,
-            y: 0
-        },
-        'w' : {
             x: 0,
             y: -1
         },
-        's' : {
+        'd' : {
             x: 0,
             y: 1
+        },
+        'w' : {
+            x: -1,
+            y: 0
+        },
+        's' : {
+            x: 1,
+            y: 0
         }
     }
 }
@@ -318,12 +318,31 @@ let STAGE = '',
     $numForMine = document.getElementsByClassName("numForMine")[0],
     $numForRS= document.getElementsByClassName("numForRS")[0];
 
-let ROUND = 0,
+var ROUND = 0,
     TURN = 0; // TURN has two value 0 and 1. 0 is the user turn, 0 is the robot turn.
 
-let RoundAutoIncrement = function() {
+var updateRound = function() {
     ROUND++;
     $round.innerHTML = ROUND;
+}
+var updateMineNum = function() {
+    KEYNUMS['m']--;
+    $numForMine.innerHTML = KEYNUMS['m'];
+}
+var updateRSNum = function() {
+    KEYNUMS['r']--;
+    $numForRS.innerHTML = KEYNUMS['r'];
+}
+var initStatus = function() {
+    if (INITIDX == 0) {
+        let className = $table.className.replace('show','') + " hide";
+        $table.className = className;
+    } else {
+        $table.className += " show";
+    }
+    $round.innerHTML = ROUND;
+    $numForMine.innerHTML = KEYNUMS['m'];
+    $numForRS.innerHTML = KEYNUMS['r'];
 }
 
 let changeStage = function(idx) {
@@ -344,13 +363,6 @@ let changeStage = function(idx) {
         $btn.innerHTML = (PARAMS.stages[idx+1]).toLocaleUpperCase();
     } else {
         $btn.innerHTML = (PARAMS.stages[idx]).toLocaleUpperCase();
-    }
-
-    if (idx == 0) {
-        let className = $table.className.replace('show','') + " hide";
-        $table.className = className;
-    } else {
-        $table.className += " show";
     }
 
     INITIDX = idx;
@@ -383,6 +395,7 @@ let init = function(p) {
         $cells.append($row);
         cells.push(row);
     }
+    initStatus();
 }
 
 init(PARAMS);
@@ -425,7 +438,8 @@ $btn.addEventListener("click", function(e){
             } else {
                 setCellsReadOnly();
                 changeStage(1);
-                RoundAutoIncrement();
+                initStatus();
+                updateRound();
             }
             break;
         case 1:
@@ -452,6 +466,7 @@ var move = function(d, cell) {
         });
         TURN = 1; 
         robotMove(d); // will the robot's turn????????????????
+
         return;
     }
 
@@ -461,14 +476,23 @@ var move = function(d, cell) {
         des.key = k;
         cell.$ipt.value = '';
         des.$ipt.value = k;
-        TURN = 1; 
-        robotMove(d); // will the robot's turn????????????????
+        
+    } else if(des.key == 'm') {
+        cell.key = '';
+        des.key = k;
+        cell.$ipt.value = '';
+        des.$ipt.value += " " + k;
+        updateMineNum();
     }
+
+    USERSPACECOORD = des;
+    TURN = 1; 
+    robotMove(d); // will the robot's turn????????????????
 
 }
 
 var robotMove = function(d) {
-
+    TURN = 0; 
 }
 
 document.addEventListener("keydown", function(e) {
