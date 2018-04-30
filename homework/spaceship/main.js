@@ -153,7 +153,7 @@ let PARAMS = {
     "robotMoves": [
         {x: -1,y: -1},
         {x: -1, y: 1},
-        {x: -1, y: 1},
+        {x: 1, y: -1},
         {x: 1, y: 1},
         {x: 0, y: -1},
         {x: 0, y: 1},
@@ -161,13 +161,7 @@ let PARAMS = {
         {x: 1, y: 0}
     ]
 }
-var robotMoves = [
-    
-];
-var ml = PARAMS.moves.length;
-for (var i = 0; i < ml; i++) {
 
-}
 let KEYNUMS = {
     'a': 0,
     'm': 0,
@@ -269,7 +263,7 @@ Cell.prototype = {
             if (isKey(key) && !$ipt.value) {
                 that.key = '';
                 KEYNUMS[key]--;
-                if (key == 'r') updateRobotCoordList(true);
+                if (key == 'r') that.updateRobotCoordList(true);
             } 
         });
 
@@ -423,25 +417,33 @@ $btn.addEventListener("click", function(e){
                     type: "error"
                 });
             } else if (KEYNUMS['m'] == 0) {
-                changeStage(2);
                 setCellsReadOnly();
                 showDialog({
                     html: "No Mines Placed!",
                     type: "error"
                 });
-            } else if (KEYNUMS['r'] == 0) {
                 changeStage(2);
+                initStatus();
+                updateRound();
+                showResult();
+            } else if (KEYNUMS['r'] == 0) {
+                
                 setCellsReadOnly();
                 showDialog({
                     html: "No Robotic Spaceships Placed!",
                     type: "error"
                 });
+                changeStage(2);
+                initStatus();
+                updateRound();
+                showResult();
             } else {
                 setCellsReadOnly();
                 changeStage(1);
                 initStatus();
                 updateRound();
             }
+            
             break;
         case 1:
             changeStage(2);
@@ -463,10 +465,10 @@ var isValidPos = function(x, y) {
 var showResult = function() {
 
     var msg = " Win!";
-    if (USERSPACECOORD == null) {
-        msg = "User" + msg;
-    } else if (ROBOTSPACECOORDLIST.length == 0){
+    if (USERSPACECOORD == null && ROBOTSPACECOORDLIST.length != 0) {
         msg = "Robot" + msg;
+    } else if (USERSPACECOORD != null && ROBOTSPACECOORDLIST.length == 0){
+        msg = "User" + msg;
     } else {
         msg = "Draw!";
     }
@@ -491,33 +493,42 @@ var move = function(d, cell) {
             type: "error"
         });
         TURN = 1; 
-        robotMove(d); // will the robot's turn????????????????
+        robotMove(d);
 
         return;
     }
 
-    var ks = k.split(" ");
-    if (ks.length > 1) {
-        cell.key = ks[0];
-        cell.$ipt.value = ks[0];
-        k = ks[1];
-    } else {
-        cell.key = '';
-        cell.$ipt.value = '';
+    
+
+    var moveU = function() {
+        var ks = k.split(" ");
+        if (ks.length > 1) {
+            cell.key = ks[0];
+            cell.$ipt.value = ks[0];
+            k = ks[1];
+        } else {
+            cell.key = '';
+            cell.$ipt.value = '';
+        }
     }
 
     var nx = x + dx,
         ny = y + dy;
     var des = cells[nx][ny],
         dk = des.key;
+    var hasMove = false;
     if (!dk) {
-        des.key = k;
-        des.$ipt.value = k;
+        des.key = 'u';
+        des.$ipt.value = 'u';
+        moveU();
+        hasMove = true;
     } else if(dk == 'm' || dk == 'M') {
         var nKey = dk.toLocaleUpperCase() + " " + k;
         des.key = nKey;
         des.$ipt.value = nKey;
+        moveU();
         updateMineNum();
+        hasMove = true;
         if (dk == 'm') {
             var moves = PARAMS.moves;
             for (var mn in moves) {
@@ -553,15 +564,171 @@ var move = function(d, cell) {
         showResult();
         return;
     }
+    if (!hasMove) {
+        changeStage(2);
+        showResult();
+    }
 
     des.updateUserCoord();
     TURN = 1; 
-    robotMove(d); // will the robot's turn????????????????
-    updateRound();
+    debugger;
+    robotMove(d); 
+
+    if (KEYNUMS['m'] == 0) {
+        changeStage(2);
+        showResult();
+    }
+    if(INITIDX != 2) updateRound();
 }
 
 var robotMove = function(d) {
-    TURN = 0; 
+    
+    var rsl = ROBOTSPACECOORDLIST.length,
+        rbms = PARAMS.robotMoves,
+        rml = rbms.length,
+        hasMove = false;
+        
+    for (var i = 0; i < rsl; i++) {
+
+        var rs = ROBOTSPACECOORDLIST[i],
+            rk = rs.key;
+        var flag = false;
+        for (var j = 0; j < rml; j++) {
+            var rm = rbms[j],
+                mx = rm.x,
+                my = rm.y,
+                x = rs.x,
+                y = rs.y,
+                nx = x + mx,
+                ny = y + my;
+
+            if (!isValidPos(nx, ny)) {
+                continue;
+            }
+            var des = cells[nx][ny],
+                dk = des.key;
+            if (dk && dk.indexOf('u') != -1) {
+                USERSPACECOORD = null;
+                if (dk.indexOf('M') != -1) {
+                    updateRSNum();
+                    rs.updateRobotCoordList(true);
+                    rsl--; i--;
+                    rs.key = '';
+                    rs.$ipt.value = '';
+                    des.key = 'M';
+                    des.$ipt.value = 'M';
+                } else {
+                    des.key = '';
+                    des.$ipt.value = '';
+                }
+                changeStage(2);
+                flag = true;
+                hasMove = true;
+            }
+        }
+        
+        for (var j = 0; j < rml && !flag; j++) {
+            var rm = rbms[j],
+                mx = rm.x,
+                my = rm.y,
+                x = rs.x,
+                y = rs.y,
+                nx = x + mx,
+                ny = y + my;
+
+            if (!isValidPos(nx, ny)) {
+                continue;
+            }
+            var des = cells[nx][ny],
+                dk = des.key;
+            if (dk && dk.indexOf('m') != -1) {
+                des.key = rk;
+                des.$ipt.value = rk;
+                rs.key = '';
+                rs.$ipt.value = '';
+                updateMineNum();
+                if (KEYNUMS['m'] == 0) {
+                    changeStage(2);
+                }
+                flag = true;
+                hasMove = true;
+            }
+        }
+        
+        for (var j = 0; j < rml && !flag; j++) {
+            var rm = rbms[j],
+                mx = rm.x,
+                my = rm.y,
+                x = rs.x,
+                y = rs.y,
+                nx = x + mx,
+                ny = y + my;
+
+            if (!isValidPos(nx, ny)) {
+                continue;
+            }
+            var des = cells[nx][ny],
+                dk = des.key;
+            if (!dk) {
+                
+                for (var k = 0; k < rml && !flag; k++) {
+                    var rmk = rbms[k],
+                        mxk = rmk.x,
+                        myk = rmk.y,
+                        dx = des.x,
+                        dy = des.y,
+                        nxk = dx + mxk,
+                        nyk = dy + myk;
+                    if (!isValidPos(nxk, nyk)) {
+                        continue;
+                    }
+                    var desk = cells[nxk][nyk],
+                        dkk = desk.key;
+                    if (dkk && dkk.indexOf('M') != -1) {
+                        rs.updateRobotCoordList(true);
+                        rsl--; i--;
+                        rs.key == '';
+                        rs.$ipt.value = '';
+                        flag = true;
+                        hasMove = true;
+                        if (ROBOTSPACECOORDLIST.length == 0) changeStage(2);
+                    }
+                }
+            }
+        }
+        for (var j = 0; j < rml && !flag; j++) {
+            var rm = rbms[j],
+                mx = rm.x,
+                my = rm.y,
+                x = rs.x,
+                y = rs.y,
+                nx = x + mx,
+                ny = y + my;
+
+            if (!isValidPos(nx, ny)) {
+                continue;
+            }
+            var des = cells[nx][ny],
+                dk = des.key;
+            if (!dk) {
+                rs.key = '';
+                rs.$ipt.value = '';
+                des.key = rk;
+                des.$ipt.value = rk;
+                ROBOTSPACECOORDLIST.splice(i, 1, des);
+                flag = true;
+                hasMove = true;
+            }
+        }
+    
+    }
+    if (hasMove = false) changeStage(2);
+
+    TURN = 0;
+    if (INITIDX == 2) {
+        showResult();
+        return;
+    }
 }
 
 document.addEventListener("keydown", function(e) {
