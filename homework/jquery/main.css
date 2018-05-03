@@ -1,0 +1,73 @@
+body{
+    font-family:"serif";
+}
+
+#he, #ahe, #na, #bo, #fo {
+    float: left;
+    width: 100%;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#he{
+    opacity: 0.3;
+}
+#ahe{
+    opacity: 0.8;
+}
+#bo {
+    margin-top: 1%;
+    margin-bottom: 1%;
+    padding-top: 2%;
+    padding-bottom: 2%;
+}
+
+#si, #co {
+    float: left;
+}
+
+#si {
+    width: 30%;
+}
+#co {
+    width: 70%;
+}
+a:visited {
+    color: #008800;
+}
+a:hover {
+    color: #991199;
+}
+a:active {
+    color: #554433;
+}
+.num {
+    width: 5em;
+}
+button {
+    width: 5em;
+}
+.myname, .city, .age{
+    color: green;
+}
+.btn{
+    width: 137px;
+    margin-top: 15px;
+}
+.droggle{
+    margin-left: 5px;
+}
+ul,li{
+    list-style-type: none;
+    
+}
+ul{
+    display: inline-block;
+    vertical-align: top
+}
+li:hover{
+    cursor: pointer;
+}
+.hide{
+    visibility: hidden;
+}

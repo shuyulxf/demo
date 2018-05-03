@@ -1,0 +1,246 @@
+<html>
+<head>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body>
+    <h1 id="he">Hello</h1>
+    <div id="na">
+        <a href="/home.html">home</a>
+        <a href="/math.html">math</a>
+        <a href="/about.html">about</a>
+    </div>
+    <div id="bo">
+        <div id="si">
+            This is side of math page.
+        </div>
+        <div id="co">
+            <form>
+                number 1: <input class="num" type="text" id="n1"> number 3: <input class="num" type="text" id="n3"><br>
+                number 2: <input class="num" type="text" id="n2"> number 4: <input class="num" type="text" id="n4"><br>
+            </form>
+            <button id="add" >add</button>
+            <button id="min">min</button>
+            <button id="fac">fac</button>
+            <br>
+            <button id="sub" >sub</button>
+            <button id="max">max</button>
+            <button id="exp" >exp</button>
+            <br>
+            <button id="mul">mul</button>
+            <button id="avg" >avg</button>
+            <button id="div">div</button>
+            <br>
+            
+        </div>
+    </div>
+    <div id="fo">
+        This is footer.
+    </div>
+    <script src="./jquery-1.12.4.min.js"></script>
+    <script>
+        $('#he').animate({
+            opacity: '1'
+        }, 1000);
+
+        
+        var isResultShow = true;
+        $(document).on("mousedown", ".btn",function() {
+           
+            if (isResultShow) isResultShow = false;
+            else isResultShow = true;
+            if (isResultShow) $("#result").show();
+            else $("#result").hide();
+        });
+        function showResult(r) {
+            var $span = $("#result span");
+            $span.html("");
+            $span.prepend(r);
+        }
+        $("button").click(function(){
+            var v = $(this).html();
+            switch(v) {
+                case 'add':
+                    add();
+                    break;
+                case 'min':
+                    min();
+                    break;
+                 case 'fac':
+                    fac();
+                    break;
+                case 'sub':
+                    sub();
+                    break;
+                case 'max':
+                    max();
+                    break;
+                case 'exp':
+                    exp();
+                    break;
+                case 'mul':
+                    mul();
+                    break;
+                case 'avg':
+                    avg();
+                    break;
+                case 'div':
+                    div();
+                    break;
+            }
+            
+        })
+        function add() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            var n3 = parseInt(document.getElementById("n3").value);
+            var n4 = parseInt(document.getElementById("n4").value);
+            if (n1 > 100 || n2 > 100 || n3 > 100 || n4 > 100) {
+                alert("number should < 100");
+            } else {
+                var r = n1+n2+n3+n4;
+                alert("" + (r));
+                showResult(r);
+            }
+        }
+        function mul() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            var n3 = parseInt(document.getElementById("n3").value);
+            var n4 = parseInt(document.getElementById("n4").value);
+            if (n1 > 100 || n2 > 100 || n3 > 100 || n4 > 100) {
+                alert("number should < 100");
+               
+            } else {
+                var r = n1*n2*n3*n4;
+                alert("" + r);
+                showResult(r);
+            }
+        }
+        function sub() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            if (n1 > 100 || n2 > 100) {
+                alert("number should < 100");
+               
+            } else {
+                var r = n1-n2;
+                alert("" + (r));
+                showResult(r);
+            }
+        }
+        function div() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            if (n1 > 100 || n2 > 100) {
+                if (isShowAlert)  alert("number should < 100");
+               
+            } else {
+                var r = (n1/n2);
+                alert("" + r);
+                showResult(r);
+            }
+        }
+        function exp() {
+            var n1 = parseInt(document.getElementById("n3").value);
+            var n2 = parseInt(document.getElementById("n4").value);
+            if (n1 > 100 || n2 > 100) {
+                alert("number should < 100");
+              
+            } else {
+                var r = Math.pow(n1,n2)
+                alert("" + r);
+                showResult(r);
+            }
+        }
+        function avg() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            var n3 = parseInt(document.getElementById("n3").value);
+            var n4 = parseInt(document.getElementById("n4").value);
+            if (n1 > 100 || n2 > 100 || n3 > 100 || n4 > 100) {
+                alert("number should < 100");
+         
+            } else {
+                var r = (n1+n2+n3+n4)/4;
+                alert("" + r);
+                showResult(r);
+            }
+        }
+        function min() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            var n3 = parseInt(document.getElementById("n3").value);
+            var n4 = parseInt(document.getElementById("n4").value);
+            if (n1 > 100 || n2 > 100 || n3 > 100 || n4 > 100) {
+                alert("number should < 100");
+               
+            } else {
+                var r = n1;
+                if (n2 < r) { r = n2; }
+                if (n3 < r) { r = n3; }
+                if (n4 < r) { r = n4; }
+                alert("" + r);
+                showResult(r);
+            }
+        }
+        function max() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            var n2 = parseInt(document.getElementById("n2").value);
+            var n3 = parseInt(document.getElementById("n3").value);
+            var n4 = parseInt(document.getElementById("n4").value);
+            if (n1 > 100 || n2 > 100 || n3 > 100 || n4 > 100) {
+                alert("number should < 100");
+                
+            } else {
+                var r = n1;
+                if (n2 > r) { r = n2; }
+                if (n3 > r) { r = n3; }
+                if (n4 > r) { r = n4; }
+                alert("" + r);
+                showResult(r);
+            }
+        }
+        function fac() {
+            var n1 = parseInt(document.getElementById("n1").value);
+            if (n1 > 100) {
+                alert("number should < 100");
+               
+            } else {
+                r = "";
+                for (var i = 1; i < n1; i += 1) {
+                    if (n1 % i == 0) {
+                        r += " " + i;
+                    }
+                }
+                alert(r);
+                showResult(r);
+            }
+        }
+        $("#co").append("<div id='result'>Result: <span class='rl'></span></div>")
+        $("#result").before("<button class='btn'>Show Result Or Not?</button>")
+        //$(".btn").after("<ul class='droggle'><li>请选择</li><li class='hide'>alert</li><li class='hide'>show</li><ul>")
+            
+        $(".num:first").focus();
+        $("#result span").hover(function(){
+            var $this = $(this);
+            $this.show();
+            $this.css("color",'red')
+        },function(){
+            var $this = $(this);
+            $this.css("color",'black')
+        });
+
+        $("button").not(".btn").mouseenter(function() {
+            var $this = $(this);
+            $this.css("color",'red')
+            $this.css("cursor",'pointer')
+        }).mouseout(function() {
+            var $this = $(this);
+            $this.css("cursor",'pointer')
+            $this.css("color",'black')
+        })
+
+      
+    </script>
+</body>
+</html>
