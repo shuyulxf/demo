@@ -45,7 +45,7 @@ a:active {
     width: 5em;
 }
 button {
-    width: 5em;
+    
 }
 .myname, .city, .age{
     color: green;
@@ -54,20 +54,19 @@ button {
     width: 137px;
     margin-top: 15px;
 }
-.droggle{
-    margin-left: 5px;
-}
 ul,li{
     list-style-type: none;
-    
+    margin: 0;
+    padding: 0;
 }
-ul{
-    display: inline-block;
-    vertical-align: top
-}
-li:hover{
+.droggle{
+    vertical-align: top;
+    display: none;
     cursor: pointer;
 }
-.hide{
-    visibility: hidden;
+.see{
+    margin-top: 20px;
+}
+button:hover{
+    cursor: pointer;
 }
