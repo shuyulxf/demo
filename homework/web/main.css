@@ -1,0 +1,75 @@
+html, body, p, ul{
+    margin: 0;
+}
+html, body{
+
+    -webkit-font-smoothing: antialiased;
+    color: #444;
+}
+ul{
+    padding: 0; 
+}
+li{
+    list-style: none;
+    position: relative;
+}
+i{
+    font-style: normal;
+    display: inline-block;
+}
+.main{
+    width: 850px;
+    margin: 0 auto;
+    margin-top: 10px;
+    padding-bottom: 30px;
+}
+.links a{
+    color: olive;
+}
+.links, .img{
+    display: inline-block;
+    vertical-align: top;
+}
+.img img{
+    width: 100px;
+    margin-left: 30px;
+}
+.ask{
+    margin-left: 10px;
+}
+.ask img{
+    width: 50px;
+}
+.h4{
+    color: #ff5030;
+    opacity: 0.8;
+}
+.h4 a{
+    color: olive;
+}
+.h5{
+    color: #ff5030;
+    opacity: 0.6;
+}
+.h1{
+    color:  #ff5030;
+    text-shadow: 0 2px 0px #ff5030;
+    font-weight: bold;
+    position: relative;
+}
+.ques{
+    margin: 25px 0;
+}
+.hide{
+    display: none;
+}
+.rlt-img{
+    width: 50px;
+    vertical-align: top;
+    margin-left: 30px;
+    margin-top: 15px;
+}
+.back{
+    position: absolute;
+    left: -35px;
+}

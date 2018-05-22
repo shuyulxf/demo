@@ -5,9 +5,9 @@
 <body>
     <h1 id="he">Hello</h1>
     <div id="na">
-        <a href="/home.html">home</a>
-        <a href="/math.html">math</a>
-        <a href="/about.html">about</a>
+        <a href="./home.html">home</a>
+        <a href="./math.html">math</a>
+        <a href="./about.html">about</a>
     </div>
     <div id="bo">
         <div id="si">
@@ -30,7 +30,6 @@
             <button id="avg" >avg</button>
             <button id="div">div</button>
             <br>
-            
         </div>
     </div>
     <div id="fo">
@@ -58,6 +57,8 @@
         }
         $("button").click(function(){
             var v = $(this).html();
+            var $d = $(".droggle");
+            $d.html($d.html() + " " + v);
             switch(v) {
                 case 'add':
                     add();
@@ -218,8 +219,22 @@
         }
         $("#co").append("<div id='result'>Result: <span class='rl'></span></div>")
         $("#result").before("<button class='btn'>Show Result Or Not?</button>")
+<<<<<<< HEAD
         $(".btn").after("<div>alert<br>show in Page</div><button class='see'>Result Show Method</button>")
         $()
+=======
+        $("#result").after("<button class='see'>Show Op List</button><div class='droggle'><div>")
+        var isOpListShow = false;
+        $(".see").click(function() {
+            if (isOpListShow) {
+                $(".droggle").slideDown();
+                isOpListShow = false;
+            } else {
+                $(".droggle").slideUp();
+                isOpListShow = true;
+            }
+        })
+>>>>>>> ce5093d8e584055e7ac2ef543a93316f54ae8b66
         $(".num:first").focus();
         $("#result span").hover(function(){
             var $this = $(this);
@@ -230,7 +245,7 @@
             $this.css("color",'black')
         });
 
-        $("button").not(".btn").mouseenter(function() {
+        $("button").not(".btn, .see").mouseenter(function() {
             var $this = $(this);
             $this.css("color",'red')
             $this.css("cursor",'pointer')
