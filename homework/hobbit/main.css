@@ -10,7 +10,7 @@ body,html{
 body{
     color: #1a1a1a;
     background: #eaeaea;
-    font-family: lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    font-family: "Roboto Condensed", sans-serif;
     font-size: 16px;
     font-size: 1rem;
     line-height: 1.75;
@@ -28,11 +28,17 @@ a{
 
 .sidebar{
     width: 300px;
-    height: 100%;
+    min-height: 100%;
+    overflow: auto;
     background: #fff;
     position: fixed;
     z-index: 999;
     transition: all .2s ease-in;
+}
+.sidebar li{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 .sidebar a {
     color: #696969;
@@ -176,14 +182,42 @@ a{
     text-align: left;
 }
 
-.name, .read-tip, .question-tip{
+.name, .read-tip, .question-tip, .question-list-rlt{
     font-weight: bold;
     color: #ff4727;
 }
-.read-tip, .question-tip{
+.des{
+    font-weight: bold;
+    color: #27d7ff;
+}
+.read-tip, .question-tip, .question-list-rlt{
     text-shadow: 0 0 1px;
     font-size: 20px;
 }
 .hide{
     display: none;
+}
+td a:hover{
+    cursor: pointer;
+   
+}
+.pd-lf{
+    padding-left: 10px;
+    color: #ff4727;
+    font-weight: bold;
+    font-size: 20px;
+}
+.tx{
+    text-indent: 25px;
+}
+.tr{
+    text-align: right;
+}
+.tr a:hover{
+    cursor: pointer;
+}
+.tr a{
+    font-weight: bold;
+    color: #ff4727;
+    font-size: 20px;
 }
