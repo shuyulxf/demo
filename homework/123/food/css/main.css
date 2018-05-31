@@ -1,0 +1,133 @@
+body,html,ul,p,li, h1{
+    margin: 0;
+    padding: 0;
+}
+body,html{
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+body{
+    color: #1a1a1a;
+    background: rgba(173, 216, 230, 0.2);
+    font-family: lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.75;
+}
+*{
+    box-sizing: border-box;
+}
+ul, li{
+    list-style: none outside none;
+}
+a{
+    background: transparent;
+    text-decoration: none;
+}
+
+#main {
+    right: 0;
+    min-height: 100%;
+    width: 1200px;
+    margin: 0 auto;
+}
+
+.header {
+    padding-top: 30px;
+    text-align: center;
+    color: #333;
+    text-shadow: 0 0 1px #333;
+}
+.article{
+    margin: 30px;
+    position: relative;
+    border: 1px solid #ddd;
+    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    background: #fff;
+    transition: all .2s ease-in;
+}
+
+.article .article-header{
+    border-left: 5px solid  rgba(255, 162, 75, 0.6);
+    padding: 30px 0 15px 25px;
+    padding-left: 7.6923%;
+}
+.article .title{
+    display: inline;
+    color: #ffa24b;
+    margin-left: 0;
+    font-weight: 300;
+    line-height: 35px;
+    font-size: 26px;
+    transition: color .3s;
+}
+
+.article .date .icon-calendar, .article .date .date-value{
+    vertical-align: middle;
+}
+.article .article-entry {
+    line-height: 1.8em;
+    padding-left: 50px;
+    padding-right: 50px;
+    padding-bottom: 15px;
+}
+
+/* Border styles */
+.table{
+    border-collapse: collapse;
+    border: none;
+    border-bottom-width: 1px;
+    border-bottom-style: solid;
+    border-bottom-color: rgb(230, 189, 189);
+}
+.table thead, .table tr {
+    border: none;
+    border-top-width: 1px;
+    border-top-style: solid;
+    border-top-color: rgb(230, 189, 189);
+}
+/* Padding and font style */
+.table td, .table th {
+    padding: 2px 10px;
+    font-size: 12px;
+    font-family: Verdana;
+    color: #666;
+}
+
+/* Alternating background colors */
+.table tr:nth-child(even) {
+    background: rgba(255, 162, 75, 0.6);
+}
+.table tr:nth-child(odd) {
+    background: #FFF
+}
+
+.item{
+    display: inline-block;
+    width: 235px;
+    text-align: center;
+    margin: 10px;
+}
+.item img{
+    width: 100%;
+}
+.item span{
+    display: inline-block;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #333;
+}
+.food-name {
+    text-align: center;
+}
+.pic {
+    text-align: center;
+}
+.pic figcaption{
+    text-align: left;
+    text-indent: 20px;
+}

@@ -1,0 +1,17 @@
+body {
+	background-color: lightblue;
+	font-family: Arial;
+}
+
+ol {
+	list-style-type: none;
+	counter-reset: method;
+}
+
+ol li::before {
+	content: "step " counter(method) ":";
+	counter-increment: method;
+	font-weight: bold;
+	text-decoration: underline;
+	margin--right: 20px;
+	}
