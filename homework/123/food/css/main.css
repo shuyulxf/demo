@@ -1,4 +1,4 @@
-body,html,ul,p,li, h1{
+body,html,ul,p,li, h1, ol{
     margin: 0;
     padding: 0;
 }
@@ -8,7 +8,7 @@ body,html{
     overflow-y: auto;
 }
 body{
-    color: #1a1a1a;
+    color: #333;
     background: rgba(173, 216, 230, 0.2);
     font-family: lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
     font-size: 16px;
@@ -18,7 +18,7 @@ body{
 *{
     box-sizing: border-box;
 }
-ul, li{
+ul, ol, li{
     list-style: none outside none;
 }
 a{
@@ -130,4 +130,35 @@ a{
 .pic figcaption{
     text-align: left;
     text-indent: 20px;
+}
+
+.detail{
+    box-sizing: border-box;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+.detail li{
+    margin: 10px 0;
+}
+.detail h2, .detail h3{
+    color: #ffa24b;
+}
+figure{
+    margin: 0;
+}
+.step{
+    display: inline-block;
+    vertical-align: top;
+}
+.w{
+    width: 928px;
+    margin-left: 10px;
+}
+.w2{
+    width: 150px;
+    margin-right: 10px;
+    font-weight: bold;
+}
+.hide{
+    display: none;
 }
