@@ -96,6 +96,8 @@ a{
     border-bottom: 1px solid #fff;
     background: #fff;
     transition: all .2s ease-in;
+    background: url(https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1804831536,3301622254&fm=27&gp=0.jpg);
+    background-size: contain;
 }
 .article .article-header{
     border-left: 5px solid  rgba(255, 162, 75, 0.6);

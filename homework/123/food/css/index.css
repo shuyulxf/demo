@@ -1,0 +1,60 @@
+body,html,ul,p,li, h1, ol{
+    margin: 0;
+    padding: 0;
+}
+body,html{
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+body{
+    color: #333;
+    font-family: lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
+    font-size: 16px;
+    font-size: 1rem;
+    line-height: 1.75;
+    background: url(../images/bg.jpg) center no-repeat;
+    background-size: cover;
+}
+*{
+    box-sizing: border-box;
+}
+ul, ol, li{
+    list-style: none outside none;
+}
+a{
+    background: transparent;
+    text-decoration: none;
+}
+
+#main {
+    right: 0;
+    min-height: 100%;
+    width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+#main li {
+    cursor: pointer;
+    margin: 15px 0;
+}
+#main li a{
+    display: inline-block;
+    width: 232px;
+    text-align: left;
+    color: #888;
+}
+#main li img, #main li span{
+    vertical-align: middle;
+}
+#main li img {
+    padding-right: 10px;
+}
+.header {
+    padding-top: 30px;
+    text-align: center;
+    color: #ffa24b;
+    text-shadow: 0 0 3px #ffa24b;
+    font-size: 36px;
+    margin-bottom: 80px;
+}

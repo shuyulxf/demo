@@ -9,11 +9,12 @@ body,html{
 }
 body{
     color: #333;
-    background: rgba(173, 216, 230, 0.2);
     font-family: lucida grande,lucida sans unicode,lucida,helvetica,Hiragino Sans GB,Microsoft YaHei,WenQuanYi Micro Hei,sans-serif;
     font-size: 16px;
     font-size: 1rem;
     line-height: 1.75;
+    background: url(../images/bg.jpg) center no-repeat;
+    background-size: cover;
 }
 *{
     box-sizing: border-box;
@@ -33,46 +34,23 @@ a{
     margin: 0 auto;
 }
 
+
 .header {
     padding-top: 30px;
     text-align: center;
-    color: #333;
-    text-shadow: 0 0 1px #333;
+    color: #ffa24b;
+    text-shadow: 0 0 1px #ffa24b;
+    margin-bottom: 100px;
 }
 .article{
+    height: 100%;
     margin: 30px;
     position: relative;
-    border: 1px solid #ddd;
-    border-top: 1px solid #fff;
-    border-bottom: 1px solid #fff;
-    background: #fff;
+    
     transition: all .2s ease-in;
 }
 
-.article .article-header{
-    border-left: 5px solid  rgba(255, 162, 75, 0.6);
-    padding: 30px 0 15px 25px;
-    padding-left: 7.6923%;
-}
-.article .title{
-    display: inline;
-    color: #ffa24b;
-    margin-left: 0;
-    font-weight: 300;
-    line-height: 35px;
-    font-size: 26px;
-    transition: color .3s;
-}
 
-.article .date .icon-calendar, .article .date .date-value{
-    vertical-align: middle;
-}
-.article .article-entry {
-    line-height: 1.8em;
-    padding-left: 50px;
-    padding-right: 50px;
-    padding-bottom: 15px;
-}
 
 /* Border styles */
 .table{
