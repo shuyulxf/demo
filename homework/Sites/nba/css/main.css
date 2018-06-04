@@ -147,7 +147,7 @@ a{
 
 /* Alternating background colors */
 .table tr:nth-child(even) {
-    background: rgba(2, 107, 183, 0.4);
+    background: rgba(2, 107, 183, 0.3);
 }
 .table tr:nth-child(odd) {
     background: #FFF
@@ -155,7 +155,16 @@ a{
 
 td a:hover{
     cursor: pointer;
-   
+   text-decoration: underline;
+}
+td a{
+    color: #666;
+}
+td img{
+    width: 40px;
+}
+td img, td span{
+    vertical-align: middle;
 }
 .pd-lf{
     padding-left: 10px;
@@ -172,7 +181,7 @@ td a:hover{
 .tr a:hover{
     cursor: pointer;
 }
-.tr a{
+.td a{
     font-weight: bold;
     color: #ff4727;
     font-size: 20px;
@@ -197,4 +206,20 @@ td a:hover{
     content: '';
     display: block;
     clear: both;
+}
+.fl img{
+    padding-right: 10px;
+}
+
+.more{
+    text-align: right;
+}
+.more a{
+    color: rgba(2, 107, 183, 1);
+}
+.lh{
+    line-height: 2;
+}
+.mw{
+    max-width: 300px;
 }
