@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Page Title</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="./vue@2.4.1.js"></script>
+    <style>
+        .fade-enter-active, .fade-leave-active {
+            transition: opacity .5s;
+        }
+        .fade-enter, .fade-leave-to /* .fade-leave-active below version 2.1.8 */ {
+            opacity: 0;
+        }
+        .name
+        {
+        width:100px;
+        height:100px;
+        background:blue;
+        transition:width 2s;
+        -moz-transition:width 2s; /* Firefox 4 */
+        -webkit-transition:width 2s; /* Safari and Chrome */
+        -o-transition:width 2s; /* Opera */
+        }
+        .name2{
+            width: 300px;
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <button @click="show=!show">Toggle</button>
+        <transition name="fade">
+            <p v-if="show">hello</p>
+        </transition>
+        <div class="name" :class="show ? '':'name2'">sfjslfjdslf</div>
+    </div>
+</body>
+<script>
+    var app = new Vue({
+        el: '#app',
+        data: {
+            show: true,
+            newClass: name
+        }
+    })
+</script>
+</html>
